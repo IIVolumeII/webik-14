@@ -44,13 +44,13 @@ Wij definieren diverse functies in application.py die elk een bepaalde 'route' a
 
 ## Views
 
-![schets](schetsen/Homepage index.png)
-![schets](schetsen/Homepage login.png)
-![schets](schetsen/lobby list.png)
+![schets](schetsen/Homepage_index.png)
+![schets](schetsen/Homepage_login.png)
+![schets](schetsen/lobby_list.png)
 ![schets](schetsen/lobby.png)
 ![schets](schetsen/Login.png)
 ![schets](schetsen/play.png)
-![schets](schetsen/post game.png)
+![schets](schetsen/post_game.png)
 ![schets](schetsen/profile.png)
 
 ## Models/helpers
