@@ -43,21 +43,28 @@ Wij definieren diverse functies in application.py die elk een bepaalde 'route' a
     - Eigen scherm
 
 ## Views
-
+### Homepage post login
 ![schets](schetsen/Homepage_index.png)
 ---------------------------------------
+### Homepage pre login
 ![schets](schetsen/Homepage_login.png)
 ---------------------------------------
+### List of available lobbies
 ![schets](schetsen/lobby_list.png)
 ---------------------------------------
+### Configurations for lobby
 ![schets](schetsen/lobby.png)
 ---------------------------------------
+### Login/ registration
 ![schets](schetsen/Login.png)
 ---------------------------------------
+### Play
 ![schets](schetsen/play.png)
 ---------------------------------------
+### Post game
 ![schets](schetsen/post_game.png)
 ---------------------------------------
+### Profile
 ![schets](schetsen/profile.png)
 
 ## Models/helpers
