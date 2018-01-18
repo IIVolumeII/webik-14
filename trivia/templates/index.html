@@ -8,29 +8,14 @@
 
   <h2>Welcome {{ user }}</h2>
 
-    <table class="table table-striped" style="width:100%">
-      <tr>
-        <th>Symbol</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>Total</th>
-      </tr>
-    {% for stock in stocks %}
-      <tr>
-        <td>{{ stock.symbol }}</td>
-        <td>{{ stock.quantity }}</td>
-        <td>{{ stock.price }}</td>
-        <td>{{ stock.usdtotal }}</td>
-      </tr>
-    {% endfor %}
-    </table>
-  <p>
-    Your cash balance is: "{{ cash }}"
-  </p>
-  <p>
-    Your grand total is: "{{ grand_total }}"
-  </p>
-
-
+  <div class="form-group">
+                <button autocomplete="off" class="btn btn-default" type="button">Leaderboards</button>
+  </div>
+  <div class="form-group">
+                <button autocomplete="off" class="btn btn-default" type="button">Play</button>
+  </div>
+  <div class="form-group">
+                <button autocomplete="off" class="btn btn-default" type="button">Learn more</button>
+  </div>
 
 {% endblock %}
