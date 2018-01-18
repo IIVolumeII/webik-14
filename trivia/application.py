@@ -48,6 +48,7 @@ def index():
 def play():
     """Redirect to lobby screen"""
 
+    return render_template("play.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -99,6 +100,7 @@ def logout():
 def learnmore():
     """Text page with info about the game."""
 
+    return render_template("learnmore")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -139,10 +141,15 @@ def register():
 def scoreboard():
     """Scoreboard for users"""
 
+    return render_template("scoreboard.html")
+
 @app.route("/profile", methods=["GET", "POST"])
 @login_required
 def profile():
     """Profile for users"""
+
+    return render_template("profile.html")
+
 
 @app.route("/change_password", methods=["GET", "POST"])
 @login_required
