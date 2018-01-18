@@ -2,7 +2,7 @@
 
 # Basisplan
 
-Wij zijn van plan om voor deze opdracht een triviawebsite te maken. Het idee van de website is om spelers in lobby's van 1 tot 5 personen alleen of samen vragen te laten beantwoorden met instelbare moeilijkheidsgraden en challenges. Spelers kunnen punten scoren door een vraag binnen de tijd goed te beantwoorden en hun scores worden opgeslagen in verschillende leaderboards. De score wordt bepaald door de moeilijkheidsgraad van de quiz en de verbonden challenges. Challenges worden dagelijks en om het half uur gewijzigd. 
+Wij zijn van plan om voor deze opdracht een triviawebsite te maken. Het idee van de website is om spelers in lobby's van 1 tot 5 personen alleen of samen vragen te laten beantwoorden met instelbare moeilijkheidsgraden en challenges. Spelers kunnen punten scoren door een vraag binnen de tijd goed te beantwoorden en hun scores worden opgeslagen in verschillende leaderboards. De score wordt bepaald door de moeilijkheidsgraad van de quiz en de verbonden challenges. Challenges worden dagelijks en om het half uur gewijzigd.
 
 ### Minimum requirements
 
@@ -18,17 +18,17 @@ Wij zijn van plan om voor deze opdracht een triviawebsite te maken. Het idee van
 
 ### Het spel
 
-Om het basisplan uit te breiden voegen wij een nieuwe gamemode toe aan de lobby's. Deze gamemode is gebaseerd op enige elementen van het spel 'werewolf'. In de lobby werken spelers nog steeds samen om vragen te beantwoorden, maar er wordt een rollenspel toegevoegd. Dit rollenspel focust zich op de discussie rondom het beantwoorden van de vragen. 
+Om het basisplan uit te breiden voegen wij een nieuwe gamemode toe aan de lobby's. Deze gamemode is gebaseerd op enige elementen van het spel 'werewolf'. In de lobby werken spelers nog steeds samen om vragen te beantwoorden, maar er wordt een rollenspel toegevoegd. Dit rollenspel focust zich op de discussie rondom het beantwoorden van de vragen.
 
-Allereerst zijn er normale spelers die de vragen goed willen beantwoorden voor punten. 
+Allereerst zijn er normale spelers die de vragen goed willen beantwoorden voor punten.
 
-Als tweede is er een leider aanwezig die het gesprek leidt en een bonus krijgt als de vragen goed worden beantwoorden. Bij fout beantwoorde vragen verliest de leider echter punten. 
+Als tweede is er een leider aanwezig die het gesprek leidt en een bonus krijgt als de vragen goed worden beantwoorden. Bij fout beantwoorde vragen verliest de leider echter punten.
 
-Als laatste is er een 'fool' die als doel heeft de groep in de weg te zitten en ze te leiden naar het fout beantwoorden van de vraag. De 'fool' weet het antwoord op de vraag van tevoren en kan dit gebruiken om de groep de verkeerde kant op te sturen. Bij het verkeerd beantwoorden van de vraag krijgt de 'fool' punten. 
+Als laatste is er een 'fool' die als doel heeft de groep in de weg te zitten en ze te leiden naar het fout beantwoorden van de vraag. De 'fool' weet het antwoord op de vraag van tevoren en kan dit gebruiken om de groep de verkeerde kant op te sturen. Bij het verkeerd beantwoorden van de vraag krijgt de 'fool' punten.
 
-Een extra functie van de leider is het ontmaskeren van de 'fool'. Als de leider goed raadt wie de 'fool' is van het spel krijgt hij hier punten voor. 
+Een extra functie van de leider is het ontmaskeren van de 'fool'. Als de leider goed raadt wie de 'fool' is van het spel krijgt hij hier punten voor.
 
-Uiteindelijk is het de bedoeling dat er leuke discussie plaatsvindt rondom het beantwoorden van de vragen en dat de rollen van leider en 'fool' slim worden gespeeld wat leidt tot leuke situaties. 
+Uiteindelijk is het de bedoeling dat er leuke discussie plaatsvindt rondom het beantwoorden van de vragen en dat de rollen van leider en 'fool' slim worden gespeeld wat leidt tot leuke situaties.
 
 ### Features
 
