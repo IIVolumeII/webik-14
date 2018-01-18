@@ -38,10 +38,9 @@
                     <div class="collapse navbar-collapse" id="navbar">
                         {% if session.user_id %}
                             <ul class="nav navbar-nav">
-                                <li><a href="{{ url_for('quote') }}">Play</a></li>
-                                <li><a href="{{ url_for('buy') }}">Leaderboards</a></li>
-                                <li><a href="{{ url_for('sell') }}">Profile</a></li>
-                                <li><a href="{{ url_for('history') }}">Daily challenges</a></li>
+                                <li><a href="{{ url_for('play') }}">Play</a></li>
+                                <li><a href="{{ url_for('scoreboard') }}">Scoreboards</a></li>
+                                <li><a href="{{ url_for('profile') }}">Profile</a></li>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
                                 <li><a href="{{ url_for('logout') }}">Log Out</a></li>
@@ -71,7 +70,7 @@
             </div>
             <div id="footer">
               {% block footer %}
-                  &copy; Copyright 2018 by Abel Aben, Timon Brouwer, Ugurhan Candemir</a>.
+                  &copy; Copyright 2018 by Abel Aben, Timon Brouwer, Ugurhan Candemir.
               {% endblock %}
             </div>
 

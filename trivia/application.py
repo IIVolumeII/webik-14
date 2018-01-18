@@ -41,100 +41,13 @@ def index():
     # select all values from the portfolio table
     portfolio = db.execute("SELECT * FROM portfolio WHERE id=:id", id=session["user_id"])
 
-    # select cash from users table and convert to usd
-    cash = db.execute("SELECT cash FROM users WHERE id=:id", id=session["user_id"])
-    cash_usd = usd(cash[0]["cash"])
+    return render_template("index.html", user = username)
 
-    # select and sum total from the portfolio table
-    total = db.execute("SELECT SUM(total) FROM portfolio WHERE id=:id", id=session["user_id"])
-
-    # sum cash and stock value to create a grand total
-    try:
-        grand_total = usd(total[0]["SUM(total)"] + cash[0]["cash"])
-    except TypeError:
-        grand_total = cash_usd
-
-    return render_template("index.html", user = username, stocks = portfolio, \
-                            cash = cash_usd, grand_total = grand_total)
-
-@app.route("/buy", methods=["GET", "POST"])
+@app.route("/play", methods=["GET", "POST"])
 @login_required
-def buy():
-    """Buy shares of stock."""
+def play():
+    """Redirect to lobby screen"""
 
-    if request.method == "POST":
-
-        # ensure amount of shares are filled in as a positive integer
-        try:
-            shares = int(request.form.get("shares"))
-        except:
-            return apology("Please fill in a symbol with a positive integer")
-
-        if shares <= 0:
-            return apology("Please fill in a symbol with a positive integer")
-
-        # ensure symbol is filled in correctly and save symbol as variable
-        try:
-            stock = lookup(request.form.get("symbol"))
-        except:
-            return apology("Please fill in both fields")
-        symbol = request.form.get("symbol")
-
-        if not symbol:
-            return apology("We could not provide information on the given symbol")
-
-        # check if the user can afford the stock if not, send apology
-        affordance = db.execute("SELECT cash FROM users WHERE id = :id", id=session["user_id"])
-        affordance = float(affordance[0]['cash'])
-
-        if not affordance > (shares * stock['price']):
-            return apology("You do not have enough funds")
-
-        # if affordable check if the user already owns the stock
-        else:
-            owned = db.execute("SELECT quantity FROM portfolio \
-                           WHERE id = :id AND symbol=:symbol", \
-                           id=session["user_id"], symbol=symbol)
-            plus_total = shares*stock["price"]
-
-            # if user doesn't own the stock create a new row for the stock
-            if not owned:
-                db.execute("INSERT INTO portfolio (id, symbol, quantity, price, total, usdtotal) \
-                            VALUES (:id, :symbol, :quantity, :price, :total, :usdtotal);", id=session["user_id"], \
-                            symbol=symbol, quantity=shares, price=usd(stock["price"]), \
-                            total=plus_total, usdtotal=usd(plus_total))
-            # if the user does own the stock update the row's quantity and total
-            else:
-                old_total = db.execute("SELECT total FROM portfolio \
-                           WHERE id = :id AND symbol=:symbol", \
-                           id=session["user_id"], symbol=symbol)
-                new_total = old_total[0]["total"] + plus_total
-                increase_quantity = owned[0]["quantity"] + shares
-                db.execute("UPDATE portfolio SET quantity=:quantity, total=:total, usdtotal=:usdtotal WHERE id=:id AND \
-                            symbol=:symbol",quantity=increase_quantity, total=new_total, usdtotal=usd(new_total), \
-                            id=session["user_id"], symbol=symbol)
-
-        # set user's new cash balance
-        db.execute("UPDATE users SET cash = cash - :total WHERE id = :id;", \
-        id=session["user_id"], total=shares*stock['price'])
-
-        # insert transaction into history
-        db.execute("INSERT INTO history (symbol, quantity, price, id) VALUES (:symbol, :quantity, :price, :id)", \
-                    symbol = symbol, quantity = shares, price = usd(stock["price"]), id=session["user_id"])
-
-        return redirect(url_for("index"))
-
-    # else if user reached route via GET (as by clicking a link or via redirect)
-    else:
-        return render_template("buy.html")
-
-@app.route("/history")
-@login_required
-def history():
-    """Show history of transactions."""
-
-    history = db.execute("SELECT * FROM history WHERE id=:id", id=session["user_id"])
-    return render_template("history.html", history=history)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -181,28 +94,11 @@ def logout():
     # redirect user to login form
     return redirect(url_for("login"))
 
-@app.route("/quote", methods=["GET", "POST"])
+@app.route("/learnmore", methods=["GET", "POST"])
 @login_required
-def quote():
-    """Get stock quote."""
+def learnmore():
+    """Text page with info about the game."""
 
-    if request.method == "POST":
-
-        # ensure a symbol is filled in
-        if not request.form.get("symbol"):
-            return apology("Please fill in a symbol")
-
-        # ensure correct symbol and display form if symbol is correct
-        symbol = lookup(request.form.get("symbol"))
-        if not symbol:
-            return apology("We could not provide information on the given symbol")
-
-        # display stock information from helpers.py & stock_info.html
-        return render_template("stock_info.html", stock = symbol)
-
-    # else if user reached route via GET (as by clicking a link or via redirect)
-    else:
-        return render_template("quote.html")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -238,71 +134,15 @@ def register():
     else:
         return render_template("register.html")
 
-@app.route("/sell", methods=["GET", "POST"])
+@app.route("/scoreboard", methods=["GET", "POST"])
 @login_required
-def sell():
-    """Sell shares of stock."""
+def scoreboard():
+    """Scoreboard for users"""
 
-    if request.method == "POST":
-
-        # ensure stock is in users portfolio
-        symbol_search = request.form.get("symbol")
-
-        symbol_portfolio = db.execute("SELECT symbol FROM portfolio WHERE id=:id AND symbol=:symbol", \
-        id=session["user_id"], symbol=symbol_search)
-
-        try:
-            if not symbol_search in symbol_portfolio[0]["symbol"]:
-                return apology("You do not own this stock")
-        except IndexError:
-            return apology("You do not own this stock")
-
-        # ensure amount of shares are filled in as a positive integer
-        try:
-            shares = int(request.form.get("shares"))
-        except:
-            return apology("Please fill in a symbol with a positive integer")
-
-        if shares <= 0:
-            return apology("Please fill in a symbol with a positive integer")
-
-        # check if the user has enough shares to sell
-        current_shares = db.execute("SELECT quantity FROM portfolio WHERE id=:id AND symbol=:symbol", \
-        id=session["user_id"], symbol=symbol_search)
-        if current_shares[0]["quantity"] < shares:
-            return apology("You do not own enough ' {} ' to sell anything".format(symbol_search))
-
-        # update quantity and total
-        else:
-            compute_shares = current_shares[0]["quantity"] - shares
-            symbol = lookup(request.form.get("symbol"))
-            old_total = db.execute("SELECT total FROM portfolio WHERE id=:id AND symbol=:symbol", \
-            id=session["user_id"], symbol=symbol_search)
-            new_total = symbol["price"] * shares
-            compute_total = old_total[0]["total"] - new_total
-            new_shares = db.execute("UPDATE portfolio SET quantity=:quantity, total=:total, usdtotal=:usdtotal \
-                                    WHERE id=:id AND symbol=:symbol", quantity=compute_shares, \
-                                    total=compute_total, id=session["user_id"], symbol=symbol_search, \
-                                    usdtotal=usd(compute_total))
-
-        # update user's cash balance
-        cash = db.execute("SELECT cash FROM users WHERE id=:id", id=session["user_id"])
-        current_cash = cash[0]["cash"]
-        new_cash = current_cash + new_total
-        db.execute("UPDATE users SET cash=:cash WHERE id=:id", cash=new_cash, id=session["user_id"])
-
-        # insert transaction into history
-        price = db.execute("SELECT price FROM portfolio WHERE id=:id AND symbol=:symbol", \
-                                    id=session["user_id"], symbol=symbol_search)
-        symbol_price = usd(new_total / shares)
-        db.execute("INSERT INTO history (symbol, quantity, price, id) VALUES (:symbol, :quantity, :price, :id)", \
-                    symbol = symbol_search, quantity = -shares, price = symbol_price, id=session["user_id"])
-
-        return redirect(url_for("index"))
-
-    # else if user reached route via GET (as by clicking a link or via redirect)
-    else:
-        return render_template("sell.html")
+@app.route("/profile", methods=["GET", "POST"])
+@login_required
+def profile():
+    """Profile for users"""
 
 @app.route("/change_password", methods=["GET", "POST"])
 @login_required
