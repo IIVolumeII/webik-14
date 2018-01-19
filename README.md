@@ -47,15 +47,15 @@ Uiteindelijk is het de bedoeling dat er leuke discussie plaatsvindt rondom het b
 
 Fools en leaders worden opgenomen op de leaderboards en krijgen een score gebaseerd op hun 'succesrate'. Dit is een percentage van de gewonnen games als hun rol vermenigvuldigd met een factor 'gespeelde games'. De beste fools en leaders kunnen dagelijks een badge verdienen.
 
-De scoreboards wat betreft de normale gamemode blijft hetzelfde en dagelijks kunnen de beste spelers ook een badge verdienen
+De scoreboards wat betreft de normale gamemode blijft hetzelfde en dagelijks kunnen de beste spelers ook een badge verdienen.
 
 ### Profiel
 
-Elke speler krijgt zijn eigen profiel met statistieken van hun normale games en speciale games als fool en leader. Op hun profiel staan ook hun badges
+Elke speler krijgt zijn eigen profiel met statistieken van hun normale games en speciale games als fool en leader. Op hun profiel staan ook hun badges.
 
 ### Learn more
 
-Op deze pagina wordt de speciale gamemode gebaseerd op werewolf uitgelegd
+Op deze pagina wordt de speciale gamemode gebaseerd op werewolf uitgelegd.
 
 # Projectorganisatie
 
@@ -70,6 +70,10 @@ Communicatie binnen de groep zal iedere werkdag plaatsvinden via bijeenkomsten, 
 slack. Over het algemeen komen wij bijeen op het science park. In het geval dat er afgeweken wordt
 van de planning wordt dit aan de groep gecommuniceerd en proberen wij hier samen een
 oplossing voor te bedenken.
+
+### Besluitvorming
+
+Besluiten worden genomen bij een unanieme stemming van de groep. Wij vinden het belangrijk om iedereen te betrekken bij het project en door iemands mening te negeren kan dit de samenwerking hinderen. Overleg wordt gevoerd door naar iedereens mening te luisteren. Uit het overleg moet een gebalanceerde uitkomst komen tussen realisme en uniekheid.
 
 ### Verantwoording voor geleverd werk
 
