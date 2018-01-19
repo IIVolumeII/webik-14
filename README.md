@@ -102,7 +102,7 @@ Als derde gaan wij ervan uit dat iedereen zijn verantwoordelijkheid aangaande he
 Als laatste verwachten wij dat iedereen op tijd begint aan de individuele opdrachten zodat er geen
 conflicten zullen zijn met het project.
 
-#Projectplanning
+# Projectplanning
 
 https://trello.com/b/SUefUnay/webik-14
 
