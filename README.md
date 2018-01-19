@@ -83,14 +83,18 @@ programmeerzaken bij te houden.
 Als eerste zal iedereen aanwezig zijn bij de bijeenkomsten tenzij dit vooraf anders is aangegeven.
 De bijeenkomsten vinden plaats rondom onze roosters en zullen minimaal 2 uur duren. Dit houdt
 het volgende in:
-● Maandag na het hoorcollege
-● Dinsdag na PAV
-● Woensdag na het laptopcollege
-● Donderdag tussen 11.00 en 17.00
-● Vrijdag voor het laptopcollege en mogelijk erna
+
+- Maandag na het hoorcollege
+- Dinsdag na PAV
+- Woensdag na het laptopcollege
+- Donderdag tussen 11.00 en 17.00
+- Vrijdag voor het laptopcollege en mogelijk erna
+
 Als tweede zal de werkdruk evenredig verdeeld worden en wordt er gecommuniceerd als iemands
 taak niet op tijd af is of niet uitpakt zoals verwacht.
+
 Als derde gaan wij ervan uit dat iedereen zijn verantwoordelijkheid aangaande het project neemt.
+
 Als laatste verwachten wij dat iedereen op tijd begint aan de individuele opdrachten zodat er geen
 conflicten zullen zijn met het project.
 
