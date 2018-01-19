@@ -1,6 +1,6 @@
-# Conceptplan
+# Projectplan
 
-# Basisplan
+# Conceptplan (basis)
 
 Wij zijn van plan om voor deze opdracht een triviawebsite te maken. Het idee van de website is om spelers in lobby's van 1 tot 5 personen alleen of samen vragen te laten beantwoorden met instelbare moeilijkheidsgraden en challenges. Spelers kunnen punten scoren door een vraag binnen de tijd goed te beantwoorden en hun scores worden opgeslagen in verschillende leaderboards. De score wordt bepaald door de moeilijkheidsgraad van de quiz en de verbonden challenges. Challenges worden dagelijks en om het half uur gewijzigd.
 
@@ -14,7 +14,7 @@ Wij zijn van plan om voor deze opdracht een triviawebsite te maken. Het idee van
 - Scoreboards
 - Chatsysteem
 
-# Uitgebreid plan
+# Conceptplan (uitgebreid)
 
 ### Het spel
 
@@ -57,5 +57,41 @@ Elke speler krijgt zijn eigen profiel met statistieken van hun normale games en 
 
 Op deze pagina wordt de speciale gamemode gebaseerd op werewolf uitgelegd
 
+# Projectorganisatie
+
+Wij beginnen alle drie met weinig ervaring, dus het is nu lastig om rollen in te delen. Wanneer wij
+meer visie hebben op het project en de te gebruiken methoden kunnen wij deze rollen beter
+indelen. Omdat wij elkaar iedere dag zien kunnen wij makkelijk inplannen wat iedereen doet en
+makkelijk in de gaten houden wat iedereen doet.
+
+### Communicatie
+
+Communicatie binnen de groep zal iedere werkdag plaatsvinden via bijeenkomsten, whatsapp en
+slack. Over het algemeen komen wij bijeen op het science park. In het geval dat er afgeweken wordt
+van de planning wordt dit aan de groep gecommuniceerd en proberen wij hier samen een
+oplossing voor te bedenken.
+
+### Verantwoording voor geleverd werk
+
+Om ieders bijdragen bij te houden gebruiken wij trello. Hiermee kunnen wij een overzichtelijke
+taakverdeling maken die iedereen in de gaten kan houden. Wanneer iemand het niet eens is met
+de evenredigheid van ieders bijdragen wordt dit aangegeven. Hiernaast gebruiken wij github om
+programmeerzaken bij te houden.
+
+### Algemene werkafspraken
+
+Als eerste zal iedereen aanwezig zijn bij de bijeenkomsten tenzij dit vooraf anders is aangegeven.
+De bijeenkomsten vinden plaats rondom onze roosters en zullen minimaal 2 uur duren. Dit houdt
+het volgende in:
+● Maandag na het hoorcollege
+● Dinsdag na PAV
+● Woensdag na het laptopcollege
+● Donderdag tussen 11.00 en 17.00
+● Vrijdag voor het laptopcollege en mogelijk erna
+Als tweede zal de werkdruk evenredig verdeeld worden en wordt er gecommuniceerd als iemands
+taak niet op tijd af is of niet uitpakt zoals verwacht.
+Als derde gaan wij ervan uit dat iedereen zijn verantwoordelijkheid aangaande het project neemt.
+Als laatste verwachten wij dat iedereen op tijd begint aan de individuele opdrachten zodat er geen
+conflicten zullen zijn met het project.
 
 
