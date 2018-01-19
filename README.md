@@ -56,7 +56,7 @@ Elke speler krijgt zijn eigen profiel met statistieken van hun normale games en 
 ### Learn more
 
 Op deze pagina wordt de speciale gamemode gebaseerd op werewolf uitgelegd
-
+----------------------------------------------------------------------------------
 # Projectorganisatie
 
 Wij beginnen alle drie met weinig ervaring, dus het is nu lastig om rollen in te delen. Wanneer wij
