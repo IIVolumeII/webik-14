@@ -8,10 +8,10 @@
     <form action="{{ url_for('play') }}" method="post">
         <div>{{ question }}</div>
         <p></p>
-        <div><input type="radio" name="answer" value= "A" >{{ answers[0] }}<br></div>
-        <div><input type="radio" name="answer" value= "B" >{{ answers[1] }}<br></div>
-        <div><input type="radio" name="answer" value= "C" >{{ answers[2] }}<br></div>
-        <div><input type="radio" name="answer" value= "D" >{{ answers[3] }}<br></div>
+        <div><input type="radio" name="answer" value= "A" >{{ answer[0] }}<br></div>
+        <div><input type="radio" name="answer" value= "B" >{{ answer[1] }}<br></div>
+        <div><input type="radio" name="answer" value= "C" >{{ answer[2] }}<br></div>
+        <div><input type="radio" name="answer" value= "D" >{{ answer[3] }}<br></div>
         <div class="form-group">
             <button class="button" type="submit">Submit</button>
         </div>

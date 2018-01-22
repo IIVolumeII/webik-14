@@ -20,9 +20,6 @@ if app.config["DEBUG"]:
         response.headers["Pragma"] = "no-cache"
         return response
 
-# custom filter
-app.jinja_env.filters["usd"] = usd
-
 # configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
@@ -53,17 +50,15 @@ def play():
 
     from pytrivia import Category, Diffculty, Type, Trivia
     my_api = Trivia(True)
-    response = my_api.request(1, Category.Anime_Manga, Diffculty.Easy, Type.Multiple_Choice)
+    response = my_api.request(1)
     results = response['results'][0]
     question = results['question']
-    answer_1 = results['correct_answer']
-    answer_2 = results['incorrect_answers'][0]
-    answer_3 = results['incorrect_answers'][1]
-    answer_4 = results['incorrect_answers'][2]
-    answers = [answer_1, answer_2, answer_3, answer_4]
+    correct_answer = results['correct_answer']
+    incorrect_answers = results['incorrect_answers']
+    answers = [correct_answer, incorrect_answers[0], incorrect_answers[1], incorrect_answers[2]]
     shuffle(answers)
 
-    return render_template("play.html", question = question, qtype = results, answers = answers)
+    return render_template("play.html", question = question, answer = answers)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
