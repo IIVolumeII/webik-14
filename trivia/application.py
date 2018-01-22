@@ -48,6 +48,7 @@ def index():
 @login_required
 def play():
     """Redirect to lobby screen"""
+    ""
 
     from pytrivia import Category, Diffculty, Type, Trivia
     my_api = Trivia(True)
