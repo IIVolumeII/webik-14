@@ -6,12 +6,21 @@
 
 {% block main %}
     <form action="{{ url_for('play') }}" method="post">
+        <h1> {{ category }}</h1>
         <div>{{ question }}</div>
         <p></p>
-        <div><input type="radio" name="answer" value= "A" >{{ answer[0] }}<br></div>
-        <div><input type="radio" name="answer" value= "B" >{{ answer[1] }}<br></div>
-        <div><input type="radio" name="answer" value= "C" >{{ answer[2] }}<br></div>
-        <div><input type="radio" name="answer" value= "D" >{{ answer[3] }}<br></div>
+        <div>
+            <input type="radio" name="answer" value= answer[0] >{{ answer[0] }}<br>
+        </div>
+        <div>
+            <input type="radio" name="answer" value= answer[1] >{{ answer[1] }}<br>
+        </div>
+        <div>
+            <input type="radio" name="answer" value= answer[2] >{{ answer[2] }}<br>
+        </div>
+        <div>
+            <input type="radio" name="answer" value= answer[3] >{{ answer[3] }}<br>
+        </div>
         <div class="form-group">
             <button class="button" type="submit">Submit</button>
         </div>

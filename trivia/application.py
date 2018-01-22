@@ -52,13 +52,16 @@ def play():
     my_api = Trivia(True)
     response = my_api.request(1)
     results = response['results'][0]
+
+    category = results['category']
+
     question = results['question']
     correct_answer = results['correct_answer']
     incorrect_answers = results['incorrect_answers']
     answers = [correct_answer, incorrect_answers[0], incorrect_answers[1], incorrect_answers[2]]
     shuffle(answers)
 
-    return render_template("play.html", question = question, answer = answers)
+    return render_template("play.html", question = question, answer = answers, category = category)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
