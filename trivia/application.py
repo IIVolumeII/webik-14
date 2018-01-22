@@ -3,6 +3,7 @@ from flask import Flask, flash, redirect, render_template, request, session, url
 from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
+from pytrivia import Category, Diffculty, Type, Trivia
 
 from helpers import *
 
@@ -47,8 +48,16 @@ def index():
 @login_required
 def play():
     """Redirect to lobby screen"""
+    ""
 
-    return render_template("play.html")
+    from pytrivia import Category, Diffculty, Type, Trivia
+    my_api = Trivia(True)
+    response = my_api.request(1, Category.Video_Games, Diffculty.Hard, Type.True_False)
+    results = response['results'][0]
+    question = results['question']
+    qtype = results['type']
+
+    return render_template("play.html", question = question, qtype = qtype)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
