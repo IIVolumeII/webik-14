@@ -98,7 +98,7 @@ def scoreboard():
         portfolio = db.execute("SELECT * FROM portfolio WHERE id = :id", id=session["user_id"])
 
 
-    return render_template("scoreboard.html", answer = answer)
+    return render_template("scoreboard.html", answer = portfolio[-1]['answer'])
 
 @app.route("/learnmore", methods=["GET", "POST"])
 @login_required
