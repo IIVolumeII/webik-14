@@ -4,6 +4,7 @@ from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 from pytrivia import Category, Diffculty, Type, Trivia
+from random import shuffle
 
 from helpers import *
 
@@ -52,16 +53,15 @@ def play():
 
     from pytrivia import Category, Diffculty, Type, Trivia
     my_api = Trivia(True)
-    response = my_api.request(1, Category.Video_Games, Diffculty.Hard, Type.Multiple_Choice)
+    response = my_api.request(1, Category.Anime_Manga, Diffculty.Easy, Type.Multiple_Choice)
     results = response['results'][0]
     question = results['question']
     answer_1 = results['correct_answer']
     answer_2 = results['incorrect_answers'][0]
     answer_3 = results['incorrect_answers'][1]
     answer_4 = results['incorrect_answers'][2]
-    answers = (answer_1, answer_2, answer_3, answer_4)
-
-
+    answers = [answer_1, answer_2, answer_3, answer_4]
+    shuffle(answers)
 
     return render_template("play.html", question = question, qtype = results, answers = answers)
 
