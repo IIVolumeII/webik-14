@@ -6,7 +6,12 @@
 
 {% block main %}
     <form action="{{ url_for('play') }}" method="post">
-        {{ question }}
-        {{ qtype }}
+        <div>{{ question }}</div>
+        <div></div>
+        <div>{{ answers[0] }}</div>
+        <div>{{ answers[1] }}</div>
+        <div>{{ answers[2] }}</div>
+        <div>{{ answers[3] }}</div>
+
     </form>
 {% endblock %}
