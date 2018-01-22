@@ -54,6 +54,7 @@ def play():
 
     category = results['category']
     qtype = results['type']
+    difficulty = results['difficulty']
 
     question = results['question']
     correct_answer = results['correct_answer']
@@ -62,12 +63,24 @@ def play():
     if qtype == 'multiple':
         answers = [correct_answer, incorrect_answers[0], incorrect_answers[1], incorrect_answers[2]]
         shuffle(answers)
+
+        asked = db.execute("INSERT INTO portfolio (id, answer, category, qtype, difficulty) \
+                            VALUES(:id, :answers, :category, :qtype, :difficulty)", \
+                            answers = correct_answer, category = category, qtype = qtype, \
+                            difficulty = difficulty, id=session["user_id"])
+
         return render_template("play.html", question = question, answer = answers, category = category,
-                            qtype = qtype)
+                                qtype = qtype, difficulty = difficulty)
     else:
         answers = [correct_answer, incorrect_answers]
+
+        asked = db.execute("INSERT INTO portfolio (id, answer, category, qtype, difficulty) \
+                            VALUES(:id, :answers, :category, :qtype, :difficulty)", \
+                            answers = answers[0], category = category, qtype = qtype, \
+                            difficulty = difficulty, id=session["user_id"] )
+
         return render_template("playbool.html", question = question, answer = answers, category = category,
-                                qtype = qtype)
+                                qtype = qtype, difficulty = difficulty)
 
 @app.route("/scoreboard", methods=["GET", "POST"])
 @login_required
@@ -82,6 +95,7 @@ def scoreboard():
 
         answer = request.form.get("answer")
 
+        portfolio = db.execute("SELECT * FROM portfolio WHERE id = :id", id=session["user_id"])
 
 
     return render_template("scoreboard.html", answer = answer)
