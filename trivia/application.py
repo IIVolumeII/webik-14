@@ -46,9 +46,8 @@ def index():
 @login_required
 def play():
     """Redirect to lobby screen"""
-    ""
 
-    from pytrivia import Category, Diffculty, Type, Trivia
+
     my_api = Trivia(True)
     response = my_api.request(1)
     results = response['results'][0]
@@ -70,7 +69,22 @@ def play():
         return render_template("playbool.html", question = question, answer = answers, category = category,
                                 qtype = qtype)
 
+@app.route("/scoreboard", methods=["GET", "POST"])
+@login_required
+def scoreboard():
+    """Scoreboard for users"""
 
+    if request.method == "POST":
+
+        # ensure answer
+        if not request.form.get("answer"):
+            return apology("Please provide an answer")
+
+        answer = request.form.get("answer")
+
+
+
+    return render_template("scoreboard.html", answer = answer)
 
 @app.route("/learnmore", methods=["GET", "POST"])
 @login_required
@@ -157,13 +171,6 @@ def register():
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("register.html")
-
-@app.route("/scoreboard", methods=["GET", "POST"])
-@login_required
-def scoreboard():
-    """Scoreboard for users"""
-
-    return render_template("scoreboard.html")
 
 @app.route("/profile", methods=["GET", "POST"])
 @login_required
