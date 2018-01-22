@@ -54,14 +54,30 @@ def play():
     results = response['results'][0]
 
     category = results['category']
+    qtype = results['type']
 
     question = results['question']
     correct_answer = results['correct_answer']
     incorrect_answers = results['incorrect_answers']
-    answers = [correct_answer, incorrect_answers[0], incorrect_answers[1], incorrect_answers[2]]
-    shuffle(answers)
 
-    return render_template("play.html", question = question, answer = answers, category = category)
+    if qtype == 'multiple':
+        answers = [correct_answer, incorrect_answers[0], incorrect_answers[1], incorrect_answers[2]]
+        shuffle(answers)
+        return render_template("play.html", question = question, answer = answers, category = category,
+                            qtype = qtype)
+    else:
+        answers = [correct_answer, incorrect_answers]
+        return render_template("playbool.html", question = question, answer = answers, category = category,
+                                qtype = qtype)
+
+
+
+@app.route("/learnmore", methods=["GET", "POST"])
+@login_required
+def learnmore():
+    """Text page with info about the game."""
+
+    return render_template("learnmore")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -107,13 +123,6 @@ def logout():
 
     # redirect user to login form
     return redirect(url_for("login"))
-
-@app.route("/learnmore", methods=["GET", "POST"])
-@login_required
-def learnmore():
-    """Text page with info about the game."""
-
-    return render_template("learnmore")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
