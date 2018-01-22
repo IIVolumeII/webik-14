@@ -6,5 +6,7 @@
 
 {% block main %}
     <form action="{{ url_for('play') }}" method="post">
+        {{ question }}
+        {{ qtype }}
     </form>
 {% endblock %}
