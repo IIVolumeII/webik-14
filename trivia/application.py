@@ -42,6 +42,13 @@ def index():
 
     return render_template("index.html", user = username)
 
+@app.route("/config", methods=["GET", "POST"])
+@login_required
+def config():
+
+
+    h = "g"
+
 @app.route("/play", methods=["GET", "POST"])
 @login_required
 def play():
@@ -49,7 +56,7 @@ def play():
 
 
     my_api = Trivia(True)
-    response = my_api.request(1)
+    response = my_api.request(1, Category.Books)
     results = response['results'][0]
 
     category = results['category']
