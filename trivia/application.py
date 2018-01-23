@@ -45,7 +45,7 @@ def index():
 @app.route("/test", methods=["GET", "POST"])
 @login_required
 def test():
-    request.form.get("answer")
+    request.form.get("config")
 
 @app.route("/config", methods=["GET", "POST"])
 @login_required
