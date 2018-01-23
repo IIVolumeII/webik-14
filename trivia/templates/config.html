@@ -17,52 +17,47 @@
 
         <form action="{{ url_for('test') }}" method="post">
 
-        <select>
         <input type="radio" name="category" value="General">General
         <input type="radio" name="category" value="Books">Books
         <input type="radio" name="category" value="Film">Film
-        <input type="radio" name="category" value="Music">Music
+        <input type="radio" name="category" value="Music">Music<br>
         <input type="radio" name="category" value="Musicals_Theatres">Musical Theatres
         <input type="radio" name="category" value="Tv">Tv
         <input type="radio" name="category" value="Video_Games">Video Games
-        <input type="radio" name="category" value="Board_Games">Board Games
+        <input type="radio" name="category" value="Board_Games">Board Games<br>
         <input type="radio" name="category" value="Nature">Nature
         <input type="radio" name="category" value="Computers">Computers
         <input type="radio" name="category" value="Maths">Maths
-        <input type="radio" name="category" value="Mythology">Mythology
+        <input type="radio" name="category" value="Mythology">Mythology<br>
         <input type="radio" name="category" value="Sports">Sports
         <input type="radio" name="category" value="Geography">Geography
         <input type="radio" name="category" value="History">History
-        <input type="radio" name="category" value="Politics">Politics
+        <input type="radio" name="category" value="Politics">Politics<br>
         <input type="radio" name="category" value="Art">Art
         <input type="radio" name="category" value="Celebrities">Celebrities
         <input type="radio" name="category" value="Animals">Animals
-        <input type="radio" name="category" value="Vehicles">Vehicles
+        <input type="radio" name="category" value="Vehicles">Vehicles<br>
         <input type="radio" name="category" value="Comics">Comics
         <input type="radio" name="category" value="Gadgets">Gadgets
         <input type="radio" name="category" value="Anime_Manga">Anime Manga
-        <input type="radio" name="category" value="Cartoon">Cartoon
+        <input type="radio" name="category" value="Cartoon">Cartoon<br>
 
         <h3>
                 Difficulty:
         </h3>
 
-        <select name="difficulty" form="config">
-        <option value="Easy">Easy</option>
-        <option value="Medium">Medium</option>
-        <option value="Hard">Hard</option>
-        </select>
+        <input type="radio" name="difficulty" value="Easy">Easy
+        <input type="radio" name="difficulty" value="Medium">Medium
+        <input type="radio" name="difficulty" value="Hard">Hard<br>
 
         <h3>
                 Question Type:
         </h3>
 
-        <select name="qtype" form="config">
-        <option value="Multiple_Choice">Multiple Choice</option>
-        <option value="True_False">True False</option>
-        </select>
+        <input type="radio" name="qtype" value="Multiple_Choice">Multiple Choice
+        <input type="radio" name="qtype" value="True_False">True or False
 
-         </form>
+        </form>
 
         <div class="form-group">
                 <button class="btn btn-primary" type="submit">Configure</button>
