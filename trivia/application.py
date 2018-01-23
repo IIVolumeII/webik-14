@@ -42,6 +42,11 @@ def index():
 
     return render_template("index.html", user = username)
 
+@app.route("/test", methods=["GET", "POST"])
+@login_required
+def test():
+    request.form.get("answer")
+
 @app.route("/config", methods=["GET", "POST"])
 @login_required
 def config():
