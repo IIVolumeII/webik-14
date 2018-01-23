@@ -49,6 +49,47 @@ def config():
 
     return render_template("config.html")
 
+@app.route("/quickplay", methods=["GET", "POST"])
+@login_required
+def quickplay():
+    """Redirect to lobby screen"""
+
+    # settings for dataset entry
+    my_api = Trivia(True)
+    response = my_api.request(1)
+    results = response['results'][0]
+
+
+    category = results['category']
+    qtype = results['type']
+    difficulty = results['difficulty']
+
+    question = results['question']
+    correct_answer = results['correct_answer']
+    incorrect_answers = results['incorrect_answers']
+
+    if qtype == 'multiple':
+        answers = [correct_answer, incorrect_answers[0], incorrect_answers[1], incorrect_answers[2]]
+        shuffle(answers)
+
+        asked = db.execute("INSERT INTO portfolio (id, answer, category, qtype, difficulty) \
+                            VALUES(:id, :answers, :category, :qtype, :difficulty)", \
+                            answers = correct_answer, category = category, qtype = qtype, \
+                            difficulty = difficulty, id=session["user_id"])
+
+        return render_template("play.html", question = question, answer = answers, category = category,
+                                qtype = qtype, difficulty = difficulty)
+    else:
+        answers = [correct_answer, incorrect_answers]
+
+        asked = db.execute("INSERT INTO portfolio (id, answer, category, qtype, difficulty) \
+                            VALUES(:id, :answers, :category, :qtype, :difficulty)", \
+                            answers = answers[0], category = category, qtype = qtype, \
+                            difficulty = difficulty, id=session["user_id"] )
+
+        return render_template("playbool.html", question = question, answer = answers, category = category,
+                                qtype = qtype, difficulty = difficulty)
+
 @app.route("/play", methods=["GET", "POST"])
 @login_required
 def play():
@@ -56,7 +97,7 @@ def play():
 
     # settings for dataset entry
     my_api = Trivia(True)
-    response = my_api.request(1, Category.Books)
+    response = my_api.request(1, Category.Books, Diffculty.Hard, Type.True_False)
     results = response['results'][0]
 
 
