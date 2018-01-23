@@ -47,17 +47,18 @@ def index():
 def config():
 
 
-    h = "g"
+    return render_template("config.html")
 
 @app.route("/play", methods=["GET", "POST"])
 @login_required
 def play():
     """Redirect to lobby screen"""
 
-
+    # settings for dataset entry
     my_api = Trivia(True)
     response = my_api.request(1, Category.Books)
     results = response['results'][0]
+
 
     category = results['category']
     qtype = results['type']
