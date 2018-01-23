@@ -45,7 +45,10 @@ def index():
 @app.route("/test", methods=["GET", "POST"])
 @login_required
 def test():
-    request.form.get("config")
+    category = request.form.get("category")
+    difficulty = request.form.get("difficulty")
+    qtype = request.form.get("qtype")
+    return render_template("test.html", category = category, difficulty = difficulty, qtype = qtype)
 
 @app.route("/config", methods=["GET", "POST"])
 @login_required

@@ -10,12 +10,12 @@
         Configuration
     </h1>
 
-    <form action="/action_page.php" id="config">
+    <form  action="{{ url_for('test') }}" method="post">
         <h3>
                 Category:
         </h3>
 
-        <form action="{{ url_for('test') }}" method="post">
+
 
         <input type="radio" name="category" value="General">General
         <input type="radio" name="category" value="Books">Books
@@ -57,7 +57,8 @@
         <input type="radio" name="qtype" value="Multiple_Choice">Multiple Choice
         <input type="radio" name="qtype" value="True_False">True or False
 
-        </form>
+
+
 
         <div class="form-group">
                 <button class="btn btn-primary" type="submit">Configure</button>
