@@ -10,7 +10,7 @@
         Configuration
     </h1>
 
-    <p>
+    <form action="/action_page.php" id="config">
         <h3>
                 Category:
         </h3>
@@ -42,13 +42,12 @@
         <input type="radio" name="category" value="Gadgets">Gadgets
         <input type="radio" name="category" value="Anime_Manga">Anime Manga
         <input type="radio" name="category" value="Cartoon">Cartoon
-        </select>
 
         <h3>
                 Difficulty:
         </h3>
 
-        <select>
+        <select name="difficulty" form="config">
         <option value="Easy">Easy</option>
         <option value="Medium">Medium</option>
         <option value="Hard">Hard</option>
@@ -58,7 +57,7 @@
                 Question Type:
         </h3>
 
-        <select>
+        <select name="qtype" form="config">
         <option value="Multiple_Choice">Multiple Choice</option>
         <option value="True_False">True False</option>
         </select>
@@ -69,6 +68,6 @@
                 <button class="btn btn-primary" type="submit">Configure</button>
         </div>
 
-    </p>
+    </form>
 
 {% endblock %}
