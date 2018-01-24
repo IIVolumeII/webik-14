@@ -6,7 +6,7 @@
 
         <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta -->
         <meta charset="utf-8"/>
-        <meta content="initial-scale=1, width=device-width" name="viewport"/>
+        <meta content="dinitial-scale=1, width=device-width" name="viewport"/>
 
         <!-- documentation at http://getbootstrap.com/, alternative themes at https://www.bootstrapcdn.com/bootswatch/ -->
         <link href="https://bootswatch.com/4/lumen/bootstrap.min.css" rel="stylesheet"/>
@@ -42,6 +42,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('quickplay') }}">Quick Play</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('leaderboards') }}">Global leaderboards</a>
+                </li>
             </ul>
 
             <ul class="navbar-nav navbar-right">
@@ -59,6 +62,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('login') }}"> Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('leaderboards') }}">Global leaderboards</a>
                 </li>
             </ul>
             {% endif %}
