@@ -5,21 +5,21 @@
 {% endblock %}
 
 {% block main %}
-    <form action="{{ url_for('scoreboard') }}" method="post">
+    <form action="{{ url_for('play') }}" method="post">
             <h1> {{ category }}</h1>
             <div>{{ question }}</div>
             <p></p>
             <div>
-            <input type="radio" name="answer" value= answer[0] >{{ answer[0] }}<br>
+            <input type="radio" name="answer" value= {{ answer[0] }} >{{ answer[0] }}<br>
             </div>
             <div>
-            <input type="radio" name="answer" value= answer[1] >{{ answer[1] }}<br>
+            <input type="radio" name="answer" value= {{ answer[1] }} >{{ answer[1] }}<br>
             </div>
             <div>
-            <input type="radio" name="answer" value= answer[2] >{{ answer[2] }}<br>
+            <input type="radio" name="answer" value= {{ answer[2] }} >{{ answer[2] }}<br>
             </div>
             <div>
-            <input type="radio" name="answer" value= answer[3] >{{ answer[3] }}<br>
+            <input type="radio" name="answer" value= {{ answer[3] }} >{{ answer[3] }}<br>
             </div>
             <p></p>
             <div class="form-group">
