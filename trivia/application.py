@@ -106,6 +106,7 @@ def quickplay():
 @login_required
 def play():
     """Redirect to lobby screen"""
+    # TODO functies in helpers schrijven voor overzicht en kortere code
 
     # select database portfolio
     portfolio = db.execute("SELECT * FROM portfolio WHERE id = :id", id=session["user_id"])
@@ -139,7 +140,8 @@ def play():
     # delete data from portfolio and return user to scoreboard if out of questions
     except ValueError:
         delete = db.execute("DELETE FROM portfolio WHERE id = :id", id=session["user_id"])
-        return render_template("scoreboard.html")
+        u_score = db.execute("SELECT score FROM users WHERE id = :id", id=session["user_id"])
+        return render_template("scoreboard.html", score = u_score)
 
     results = response['results'][qnumber - 1]
     qtype = results['type']

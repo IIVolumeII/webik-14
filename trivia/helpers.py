@@ -1,19 +1,13 @@
 import csv
 import urllib.request
 
-from flask import redirect, render_template, request, session
 from functools import wraps
 from pytrivia import Category, Diffculty, Type, Trivia
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
 from cs50 import SQL
-from cs50 import SQL
-from flask import Flask, flash, redirect, render_template, request, session, url_for
-from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
-from pytrivia import Category, Diffculty, Type, Trivia
-from random import shuffle
 
 # configure CS50 Library to use SQLite database
 db = SQL("sqlite:///finance.db")
@@ -57,7 +51,7 @@ def score(answer):
     user_answer = answer
     real_answer = portfolio[-1]["answer"]
     if user_answer == real_answer:
-        db.execute("UPDATE users set score=score+111 WHERE id=:id", \
+        db.execute("UPDATE users set score=score+1 WHERE id=:id", \
                     id=session["user_id"])
 
 
