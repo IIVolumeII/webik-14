@@ -60,22 +60,24 @@ def config():
 @app.route("/quickplay", methods=["GET", "POST"])
 @login_required
 def quickplay():
-    """Redirect to lobby screen"""
+    """Play with completely randomized questions"""
 
-    # settings for dataset entry
+    # set settings for dataset entry
     my_api = Trivia(True)
     response = my_api.request(1, Category.General)
     results = response['results'][0]
 
-
+    # save config variables
     category = results['category']
     qtype = results['type']
     difficulty = results['difficulty']
 
+    # store questions and answers in variables
     question = results['question']
     correct_answer = results['correct_answer']
     incorrect_answers = results['incorrect_answers']
 
+    # insert data into portfolio for respective questiontypes
     if qtype == 'multiple':
         answers = [correct_answer, incorrect_answers[0], incorrect_answers[1], incorrect_answers[2]]
         shuffle(answers)
@@ -85,6 +87,7 @@ def quickplay():
                             answers = correct_answer, category = category, qtype = qtype, \
                             difficulty = difficulty, id=session["user_id"])
 
+        # display trivia question multiple choice
         return render_template("play.html", question = question, answer = answers, category = category,
                                 qtype = qtype, difficulty = difficulty)
     else:
@@ -95,6 +98,7 @@ def quickplay():
                             answers = answers[0], category = category, qtype = qtype, \
                             difficulty = difficulty, id=session["user_id"] )
 
+        # display trivia question true or false
         return render_template("playbool.html", question = question, answer = answers, category = category,
                                 qtype = qtype, difficulty = difficulty)
 
@@ -103,13 +107,14 @@ def quickplay():
 def play():
     """Redirect to lobby screen"""
 
-    # user config
+    # initial user config for first question
     try:
         cat = request.form.get("category")
         dif = request.form.get("difficulty")
         questiontype = request.form.get("qtype")
         qnumber = int(request.form.get("qnumber"))
 
+    # retrieve initial user config for other questions
     except TypeError:
         portfolio = db.execute("SELECT * FROM portfolio WHERE id = :id", id=session["user_id"])
         cat = portfolio[-1]["category"]
@@ -117,23 +122,24 @@ def play():
         questiontype = portfolio[-1]["qtype"]
         qnumber = int(portfolio[-1]["qnumber"]) - 1
 
-    # settings for dataset entry
+    # set settings for dataset entry
     my_api = Trivia(True)
-    response = my_api.request(qnumber, getattr(Category,cat), getattr(Diffculty,dif),
-                                getattr(Type,questiontype))
+    try:
+        response = my_api.request(qnumber, getattr(Category,cat), getattr(Diffculty,dif),
+                                    getattr(Type,questiontype))
+    # delete data from portfolio and return user to scoreboard if out of questions
+    except ValueError:
+        delete = db.execute("DELETE FROM portfolio WHERE id = :id", id=session["user_id"])
+        return render_template("scoreboard.html")
+
+    # store questions and answers in variables
     results = response['results'][qnumber - 1]
-
-
-    category = results['category']
-    qtype = results['type']
-    difficulty = results['difficulty']
-
     question = results['question']
     correct_answer = results['correct_answer']
     incorrect_answers = results['incorrect_answers']
 
-    if qtype == 'multiple':
-
+    # insert data into portfolio for respective questiontypes
+    if questiontype == 'multiple':
         answers = [correct_answer, incorrect_answers[0], incorrect_answers[1], incorrect_answers[2]]
         shuffle(answers)
 
@@ -142,19 +148,21 @@ def play():
                             answers = correct_answer, category = cat, qtype = questiontype, \
                             difficulty = dif, qnumber = qnumber, id=session["user_id"])
 
-        return render_template("play.html", question = question, answer = answers, category = category,
-                                qtype = qtype, difficulty = difficulty)
+        # display trivia question multiple choice
+        return render_template("play.html", question = question, answer = answers, category = cat,
+                                qtype = questiontype, difficulty = dif)
 
     else:
         answers = [correct_answer, incorrect_answers]
 
         asked = db.execute("INSERT INTO portfolio (id, answer, category, qtype, difficulty, qnumber) \
                             VALUES(:id, :answers, :category, :qtype, :difficulty, :qnumber)", \
-                            answers = answers[0], category = category, qtype = qtype, \
-                            difficulty = difficulty, qnumber = qnumber, id=session["user_id"] )
+                            answers = correct_answer, category = cat, qtype =questiontype, \
+                            difficulty = dif, qnumber = qnumber, id=session["user_id"] )
 
-        return render_template("playbool.html", question = question, answer = answers, category = category,
-                                qtype = qtype, difficulty = difficulty)
+        # display trivia question true or false
+        return render_template("playbool.html", question = question, answer = answers, category = cat,
+                                qtype = questiontype, difficulty = dif)
 
 @app.route("/scoreboard", methods=["GET", "POST"])
 @login_required
