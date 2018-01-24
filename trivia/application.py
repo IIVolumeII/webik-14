@@ -107,6 +107,16 @@ def quickplay():
 def play():
     """Redirect to lobby screen"""
 
+    # select database portfolio
+    portfolio = db.execute("SELECT * FROM portfolio WHERE id = :id", id=session["user_id"])
+
+    # check if correct answer
+    try:
+        user_answer = request.form.get("answer")
+        score(user_answer)
+    except IndexError:
+        x = 'x'
+
     # initial user config for first question
     try:
         cat = request.form.get("category")
@@ -116,7 +126,6 @@ def play():
 
     # retrieve initial user config for other questions
     except TypeError:
-        portfolio = db.execute("SELECT * FROM portfolio WHERE id = :id", id=session["user_id"])
         cat = portfolio[-1]["category"]
         dif = portfolio[-1]["difficulty"]
         questiontype = portfolio[-1]["qtype"]
@@ -131,7 +140,6 @@ def play():
     except ValueError:
         delete = db.execute("DELETE FROM portfolio WHERE id = :id", id=session["user_id"])
         return render_template("scoreboard.html")
-
 
     results = response['results'][qnumber - 1]
     qtype = results['type']
