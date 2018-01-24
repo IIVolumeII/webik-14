@@ -103,9 +103,15 @@ def quickplay():
 def play():
     """Redirect to lobby screen"""
 
+    # user config
+    cat = request.form.get("category")
+    dif = request.form.get("difficulty")
+    questiontype = request.form.get("qtype")
+
     # settings for dataset entry
     my_api = Trivia(True)
-    response = my_api.request(1, Category.Books, Diffculty.Hard, Type.True_False)
+    response = my_api.request(1, getattr(Category,cat), getattr(Diffculty,dif),
+                                getattr(Type,questiontype))
     results = response['results'][0]
 
 
