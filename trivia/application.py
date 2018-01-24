@@ -282,3 +282,7 @@ def change_password():
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("password.html")
+
+@app.route("/leaderboards", methods=["GET"])
+def leaderboards():
+    return render_template("leaderboards.html")

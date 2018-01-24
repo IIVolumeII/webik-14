@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Leaderboards
+{% endblock %}
+
+{% block main %}
+
+  <h1>Global leaderboards</h1>
+
+<table width="100%">
+  <thead>
+    <tr class="table table-hover">
+      <th scope="col">Rank</th>
+      <th scope="col">Username</th>
+      <th scope="col">Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="table-success">
+      <td>1.</td>
+      <td>Foo</td>
+      <td>9999</td>
+    </tr>
+    <tr class="table-info">
+      <td>2.</td>
+      <td>Bar</td>
+      <td>8888</td>
+    </tr>
+    <tr class="table-danger">
+      <td>3.</td>
+      <td>Baz</td>
+      <td>7777</td>
+    </tr>
+    <tr class="table-active">
+      <td>4.</td>
+      <td>AAAA</td>
+      <td>6666</td>
+    </tr>
+    <tr class="table-active">
+      <td>5.</td>
+      <td>BBBB</td>
+      <td>5555</td>
+    </tr>
+  </tbody>
+</table>
+
+{% endblock %}
