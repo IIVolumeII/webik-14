@@ -132,14 +132,21 @@ def play():
         delete = db.execute("DELETE FROM portfolio WHERE id = :id", id=session["user_id"])
         return render_template("scoreboard.html")
 
-    # store questions and answers in variables
+
     results = response['results'][qnumber - 1]
+    qtype = results['type']
+
+    category = results['category']
+    qtype = results['type']
+    difficulty = results['difficulty']
+
+    # store questions and answers in variables
     question = results['question']
     correct_answer = results['correct_answer']
     incorrect_answers = results['incorrect_answers']
 
     # insert data into portfolio for respective questiontypes
-    if questiontype == 'multiple':
+    if qtype == 'multiple':
         answers = [correct_answer, incorrect_answers[0], incorrect_answers[1], incorrect_answers[2]]
         shuffle(answers)
 
@@ -149,8 +156,8 @@ def play():
                             difficulty = dif, qnumber = qnumber, id=session["user_id"])
 
         # display trivia question multiple choice
-        return render_template("play.html", question = question, answer = answers, category = cat,
-                                qtype = questiontype, difficulty = dif)
+        return render_template("play.html", question = question, answer = answers, category = category,
+                                qtype = qtype, difficulty = difficulty)
 
     else:
         answers = [correct_answer, incorrect_answers]
@@ -161,8 +168,8 @@ def play():
                             difficulty = dif, qnumber = qnumber, id=session["user_id"] )
 
         # display trivia question true or false
-        return render_template("playbool.html", question = question, answer = answers, category = cat,
-                                qtype = questiontype, difficulty = dif)
+        return render_template("playbool.html", question = question, answer = answers, category = category,
+                                qtype = qtype, difficulty = difficulty)
 
 @app.route("/scoreboard", methods=["GET", "POST"])
 @login_required
