@@ -9,11 +9,11 @@ Wij zijn van plan om voor deze opdracht een triviawebsite te maken. Het idee van
 - Index
 - Inloggen/ registreren / uitloggen
 - Triviaspel
-~~- Lobby met vragen om te beantwoorden~~
-~~- Samen kunnen spelen in een lobby~~
+- ~~Lobby met vragen om te beantwoorden~~
+- ~~Samen kunnen spelen in een lobby~~
 - Challenges bij de vragen die de score beinvloeden
 - Scoreboards
-~~- Chatsysteem~~
+- ~~Chatsysteem~~
 
 # Conceptplan (uitgebreid)
 
@@ -41,8 +41,8 @@ Onze nieuwe uitbreiding van het basisplan is om de gebruikers een mogelijkheid o
 - Login (inloggen, mogelijk wachtwoord vergeten toevoegen aan deze route)
 - Register (registreren)
 - Configuration (moeilijkheidsgraad, gamemode, challenges)
-~~- Lobby (trivia spelen, score zien, configuration zien)~~
-~~- Chat (live communiceren over de vragen, gebruikersnamen kunnen zien, rollen verdelen)~~
+- ~~Lobby (trivia spelen, score zien, configuration zien)~~
+- ~~Chat (live communiceren over de vragen, gebruikersnamen kunnen zien, rollen verdelen)~~
 - Scoreboard (zien van de scores en mogelijk het zoeken van spelers)
 - Profile (zien van je eigen statistieken en badges)
 - Badges verzamelen
