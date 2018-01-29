@@ -225,33 +225,29 @@ def logout():
 def register():
     """Register user."""
 
-    if request.method == "POST":
+    # ensure username is submitted
+    if not request.form.get("username"):
+        return apology("Please provide a username")
 
-        # ensure username is submitted
-        if not request.form.get("username"):
-            return apology("Please provide a username")
+    # ensure passwords are submitted and match
+    if not request.form.get("password"):
+        return apology("Please provide a password")
+    if not request.form.get("password2"):
+        return apology("Please fill in both password fields")
+    if not request.form.get("password") == request.form.get("password2"):
+        return apology("Please make sure your passwords match")
 
-        # ensure passwords are submitted and match
-        if not request.form.get("password"):
-            return apology("Please provide a password")
-        if not request.form.get("password2"):
-            return apology("Please fill in both password fields")
-        if not request.form.get("password") == request.form.get("password2"):
-            return apology("Please make sure your passwords match")
+    # add user to database and store password as hash
+    registered = new_user()
 
-        # add user to database and store password as hash
-        registered = register()
+    # check if the username is already taken
+    if not registered:
+        return apology("Username is already taken. Please fill in a different username")
 
-        # check if the username is already taken
-        if not registered:
-            return apology("Username is already taken. Please fill in a different username")
+    # redirect user to home page
+    return redirect(url_for("index"))
 
-        # redirect user to home page
-        return redirect(url_for("index"))
 
-    # else if user reached route via GET (as by clicking a link or via redirect)
-    else:
-        return render_template("register.html")
 
 @app.route("/profile", methods=["GET", "POST"])
 @login_required

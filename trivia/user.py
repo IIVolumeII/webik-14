@@ -19,11 +19,11 @@ def rows():
 
     return db.execute("SELECT * FROM users WHERE username = :username", username=request.form.get("username"))
 
-def register():
+def new_user():
 
     db.execute("INSERT INTO users (username, hash) VALUES(:username, :hash)", \
-                                username = request.form.get("username"), \
-                                hash = pwd_context.hash(request.form.get("password")))
+                username = request.form.get("username"), \
+                hash = pwd_context.hash(request.form.get("password")))
 
 def old_hash():
 
@@ -36,4 +36,4 @@ def check_hash():
 def update_pass():
 
     db.execute("UPDATE users set hash=:hash WHERE id=:id", \
-                    hash=pwd_context.hash(new_pass), id=session["user_id"])
+                hash=pwd_context.hash(new_pass), id=session["user_id"])
