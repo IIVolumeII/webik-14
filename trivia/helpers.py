@@ -9,6 +9,8 @@ from cs50 import SQL
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 
+
+
 # configure CS50 Library to use SQLite database
 db = SQL("sqlite:///finance.db")
 
@@ -41,11 +43,8 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-def score(answer):
+def score(answer, portfolio):
     """Adds points for correct answer"""
-
-    # select database portfolio
-    portfolio = db.execute("SELECT * FROM portfolio WHERE id = :id", id=session["user_id"])
 
     # check if answer is correct
     user_answer = answer
@@ -54,7 +53,22 @@ def score(answer):
         db.execute("UPDATE users set score=score+1 WHERE id=:id", \
                     id=session["user_id"])
 
+def qinit(portfolio):
+    """Initializes all but the first question"""
 
+    cat = portfolio[-1]["category"]
+    dif = portfolio[-1]["difficulty"]
+    questiontype = portfolio[-1]["qtype"]
+    qnumber = int(portfolio[-1]["qnumber"]) - 1
+    config = [cat, dif, questiontype, qnumber]
+    return (config)
+
+def outofq(portfolio):
+    """Checks if out of questions"""
+
+    delete = db.execute("DELETE FROM portfolio WHERE id = :id", id=session["user_id"])
+    u_score = db.execute("SELECT score FROM users WHERE id = :id", id=session["user_id"])
+    return (u_score)
 
 
 

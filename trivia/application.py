@@ -106,7 +106,6 @@ def quickplay():
 @login_required
 def play():
     """Redirect to lobby screen"""
-    # TODO functies in helpers schrijven voor overzicht en kortere code
 
     # select database portfolio
     portfolio = db.execute("SELECT * FROM portfolio WHERE id = :id", id=session["user_id"])
@@ -114,9 +113,9 @@ def play():
     # check if correct answer
     try:
         user_answer = request.form.get("answer")
-        score(user_answer)
-    except IndexError:
-        x = 'x'
+        score(user_answer, portfolio)
+    except:
+        pass
 
     # initial user config for first question
     try:
@@ -127,10 +126,11 @@ def play():
 
     # retrieve initial user config for other questions
     except TypeError:
-        cat = portfolio[-1]["category"]
-        dif = portfolio[-1]["difficulty"]
-        questiontype = portfolio[-1]["qtype"]
-        qnumber = int(portfolio[-1]["qnumber"]) - 1
+        config = qinit(portfolio)
+        qnumber = config[3]
+        cat = config[0]
+        dif = config[1]
+        questiontype = config[2]
 
     # set settings for dataset entry
     my_api = Trivia(True)
@@ -139,9 +139,10 @@ def play():
                                     getattr(Type,questiontype))
     # delete data from portfolio and return user to scoreboard if out of questions
     except ValueError:
-        delete = db.execute("DELETE FROM portfolio WHERE id = :id", id=session["user_id"])
-        u_score = db.execute("SELECT score FROM users WHERE id = :id", id=session["user_id"])
-        return render_template("scoreboard.html", score = u_score)
+        user_answer = request.form.get("answer")
+        score(user_answer, portfolio)
+        quit = outofq(portfolio)
+        return render_template("scoreboard.html", score = quit)
 
     results = response['results'][qnumber - 1]
     qtype = results['type']
