@@ -36,7 +36,7 @@ def index():
     """User homepage and navigation hub"""
 
     # select username for welcome message
-    user = get_user():
+    user = get_user()
     username = user[0]["username"]
 
     return render_template("index.html", user = username)
@@ -195,14 +195,14 @@ def login():
             return apology("Please provide password")
 
         # query database for username
-        rows = rows()
+        row = rows()
 
         # ensure username exists and password is correct
-        if len(rows) != 1 or not pwd_context.verify(request.form.get("password"), rows[0]["hash"]):
+        if len(row) != 1 or not pwd_context.verify(request.form.get("password"), row[0]["hash"]):
             return apology("Invalid username and/or password")
 
         # remember which user has logged in
-        session["user_id"] = rows[0]["id"]
+        session["user_id"] = row[0]["id"]
 
         # redirect user to home page
         return redirect(url_for("index"))

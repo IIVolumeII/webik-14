@@ -1,3 +1,16 @@
+from cs50 import SQL
+from flask import Flask, flash, redirect, render_template, request, session, url_for
+from flask_session import Session
+from passlib.apps import custom_app_context as pwd_context
+from tempfile import mkdtemp
+from pytrivia import Category, Diffculty, Type, Trivia
+from random import shuffle
+
+from helpers import *
+
+
+db = SQL("sqlite:///finance.db")
+
 def get_user():
 
     return db.execute("SELECT username FROM users WHERE id=:id", id=session["user_id"])
