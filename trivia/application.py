@@ -105,15 +105,12 @@ def quickplay():
 @app.route("/play", methods=["GET", "POST"])
 @login_required
 def play():
-    """Redirect to lobby screen"""
-
-    # select database portfolio
-    portfolio = db.execute("SELECT * FROM portfolio WHERE id = :id", id=session["user_id"])
+    """Play the trivia game with configured settings"""
 
     # check if correct answer
     try:
         user_answer = request.form.get("answer")
-        score(user_answer, portfolio)
+        score(user_answer)
     except:
         pass
 
@@ -126,7 +123,7 @@ def play():
 
     # retrieve initial user config for other questions
     except TypeError:
-        config = qinit(portfolio)
+        config = qinit()
         qnumber = config[3]
         cat = config[0]
         dif = config[1]
@@ -140,13 +137,13 @@ def play():
     # delete data from portfolio and return user to scoreboard if out of questions
     except ValueError:
         user_answer = request.form.get("answer")
-        score(user_answer, portfolio)
-        quit = outofq(portfolio)
+        score(user_answer)
+        quit = outofq()
         return render_template("scoreboard.html", score = quit)
 
+    # store question config
     results = response['results'][qnumber - 1]
     qtype = results['type']
-
     category = results['category']
     qtype = results['type']
     difficulty = results['difficulty']
@@ -160,11 +157,7 @@ def play():
     if qtype == 'multiple':
         answers = [correct_answer, incorrect_answers[0], incorrect_answers[1], incorrect_answers[2]]
         shuffle(answers)
-
-        asked = db.execute("INSERT INTO portfolio (id, answer, category, qtype, difficulty, qnumber) \
-                            VALUES(:id, :answers, :category, :qtype, :difficulty, :qnumber)", \
-                            answers = correct_answer, category = cat, qtype = questiontype, \
-                            difficulty = dif, qnumber = qnumber, id=session["user_id"])
+        sconfigmulti(answers, cat, questiontype, dif, qnumber, correct_answer)
 
         # display trivia question multiple choice
         return render_template("play.html", question = question, answer = answers, category = category,
@@ -172,15 +165,12 @@ def play():
 
     else:
         answers = [correct_answer, incorrect_answers]
-
-        asked = db.execute("INSERT INTO portfolio (id, answer, category, qtype, difficulty, qnumber) \
-                            VALUES(:id, :answers, :category, :qtype, :difficulty, :qnumber)", \
-                            answers = correct_answer, category = cat, qtype =questiontype, \
-                            difficulty = dif, qnumber = qnumber, id=session["user_id"] )
+        sconfigtf(answers, cat, questiontype, dif, qnumber, correct_answer)
 
         # display trivia question true or false
         return render_template("playbool.html", question = question, answer = answers, category = category,
                                 qtype = qtype, difficulty = difficulty)
+
 
 @app.route("/scoreboard", methods=["GET", "POST"])
 @login_required
