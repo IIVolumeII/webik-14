@@ -5,6 +5,15 @@
 {% endblock %}
 
 {% block main %}
+
+    <h2>{{ user }}</h2>
+
     <form action="{{ url_for('profile') }}" method="post">
     </form>
+
+    <div class="form-group">
+                <a href="{{ url_for('change_password') }}" class="btn btn-warning btn-lg" role="button" >Change Password</a>
+    </div>
+
+
 {% endblock %}
