@@ -7,6 +7,7 @@ from pytrivia import Category, Diffculty, Type, Trivia
 from random import shuffle
 
 from helpers import *
+from user import *
 
 # configure application
 app = Flask(__name__)
@@ -32,29 +33,20 @@ db = SQL("sqlite:///finance.db")
 @app.route("/")
 @login_required
 def index():
+    """User homepage and navigation hub"""
 
     # select username for welcome message
     user = db.execute("SELECT username FROM users WHERE id=:id", id=session["user_id"])
     username = user[0]["username"]
 
-    # select all values from the portfolio table
-    portfolio = db.execute("SELECT * FROM portfolio WHERE id=:id", id=session["user_id"])
-
     return render_template("index.html", user = username)
-
-@app.route("/test", methods=["GET", "POST"])
-@login_required
-def test():
-    category = request.form.get("category")
-    difficulty = request.form.get("difficulty")
-    qtype = request.form.get("qtype")
-    return render_template("test.html", category = category, difficulty = difficulty, qtype = qtype)
 
 @app.route("/config", methods=["GET", "POST"])
 @login_required
 def config():
+    """Configure your game"""
 
-
+    # show config forms
     return render_template("config.html")
 
 @app.route("/quickplay", methods=["GET", "POST"])
@@ -136,10 +128,8 @@ def play():
                                     getattr(Type,questiontype))
     # delete data from portfolio and return user to scoreboard if out of questions
     except ValueError:
-        user_answer = request.form.get("answer")
-        score(user_answer)
         quit = outofq()
-        return render_template("scoreboard.html", score = quit)
+        return render_template("scoreboard.html", score = user_answer)
 
     # store question config
     results = response['results'][qnumber - 1]
@@ -177,18 +167,7 @@ def play():
 def scoreboard():
     """Scoreboard for users"""
 
-    if request.method == "POST":
-
-        # ensure answer
-        if not request.form.get("answer"):
-            return apology("Please provide an answer")
-
-        answer = request.form.get("answer")
-
-        portfolio = db.execute("SELECT * FROM portfolio WHERE id = :id", id=session["user_id"])
-
-
-    return render_template("scoreboard.html", answer = portfolio[-1]['answer'])
+    return render_template("scoreboard.html")
 
 @app.route("/learnmore", methods=["GET", "POST"])
 @login_required
