@@ -36,7 +36,7 @@ def index():
     """User homepage and navigation hub"""
 
     # select username for welcome message
-    user = db.execute("SELECT username FROM users WHERE id=:id", id=session["user_id"])
+    user = get_user():
     username = user[0]["username"]
 
     return render_template("index.html", user = username)
@@ -195,7 +195,7 @@ def login():
             return apology("Please provide password")
 
         # query database for username
-        rows = db.execute("SELECT * FROM users WHERE username = :username", username=request.form.get("username"))
+        rows = rows()
 
         # ensure username exists and password is correct
         if len(rows) != 1 or not pwd_context.verify(request.form.get("password"), rows[0]["hash"]):
@@ -240,9 +240,7 @@ def register():
             return apology("Please make sure your passwords match")
 
         # add user to database and store password as hash
-        registered = db.execute("INSERT INTO users (username, hash) VALUES(:username, :hash)", \
-                                username = request.form.get("username"), \
-                                hash = pwd_context.hash(request.form.get("password")))
+        registered = register()
 
         # check if the username is already taken
         if not registered:
@@ -270,8 +268,8 @@ def change_password():
     if request.method == "POST":
 
         # ensure password matches old password
-        old_hash = db.execute("SELECT hash FROM users WHERE id=:id", id=session["user_id"])
-        check_hash = pwd_context.verify(request.form.get("old_password"), old_hash[0]["hash"])
+        old_hash = old_hash()
+        check_hash = check_hash()
         new_pass = request.form.get("new_password")
 
         # ensure new passwords match and all fields are filled in
@@ -286,8 +284,7 @@ def change_password():
                 return apology("Please make sure your passwords match")
 
         # update users' password
-        db.execute("UPDATE users set hash=:hash WHERE id=:id", \
-                    hash=pwd_context.hash(new_pass), id=session["user_id"])
+        update_pass()
 
         return redirect(url_for("index"))
 
