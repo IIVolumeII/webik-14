@@ -22,5 +22,5 @@ def check_hash():
 
 def update_pass():
 
-    return db.execute("UPDATE users set hash=:hash WHERE id=:id", \
+    db.execute("UPDATE users set hash=:hash WHERE id=:id", \
                     hash=pwd_context.hash(new_pass), id=session["user_id"])
