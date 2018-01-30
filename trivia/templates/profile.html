@@ -6,7 +6,10 @@
 
 {% block main %}
 
-    <h2>{{ user }}</h2>
+    <h1>Profile page: '{{ user }}'</h1>
+    <p></p>
+    <h3>Total score: {{ t_score }} </h3>
+    <h3>Last session's score: {{ s_score }} </h3>
 
     <form action="{{ url_for('profile') }}" method="post">
     </form>

@@ -21,6 +21,7 @@ def new_user():
     return registered
 
 def username():
+
     # select username in session
     user = db.execute("SELECT username FROM users WHERE id = :id", id=session["user_id"])
     username = user[0]["username"]
@@ -42,3 +43,9 @@ def get_hash():
     # retrieve hash from database
     user_hash = db.execute("SELECT hash FROM users WHERE id=:id", id=session["user_id"])
     return user_hash
+
+def update_pass(password):
+
+    # update users' password
+    db.execute("UPDATE users set hash=:hash WHERE id=:id", \
+                hash=pwd_context.hash(password), id=session["user_id"])

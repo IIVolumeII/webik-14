@@ -252,7 +252,14 @@ def register():
 def profile():
     """Profile for users"""
 
-    return render_template("profile.html")
+    # select username for welcome message
+    user = username()
+
+    # select last session score and total score
+    score = outofq()
+
+    return render_template("profile.html", user = user, t_score = score[0][0]["total_score"], \
+                            s_score = score[1][0]["session_score"])
 
 
 @app.route("/change_password", methods=["GET", "POST"])
@@ -278,10 +285,9 @@ def change_password():
                 return apology("Please make sure your passwords match")
 
         # update users' password
-        db.execute("UPDATE users set hash=:hash WHERE id=:id", \
-                    hash=pwd_context.hash(new_pass), id=session["user_id"])
+        update_pass(new_pass)
 
-        return redirect(url_for("index"))
+        return succes("Succesfully changed your password")
 
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
