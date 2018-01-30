@@ -28,6 +28,20 @@ def apology(message, code=400):
         return s
     return render_template("apology.html", top=code, bottom=escape(message)), code
 
+def succes(message, code=200):
+    """Renders message as an apology to user."""
+    def escape(s):
+        """
+        Escape special characters.
+
+        https://github.com/jacebrowning/memegen#special-characters
+        """
+        for old, new in [("-", "--"), (" ", "-"), ("_", "__"), ("?", "~q"),
+                         ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
+            s = s.replace(old, new)
+        return s
+    return render_template("succes.html", top=code, bottom=escape(message)), code
+
 
 def login_required(f):
     """
@@ -51,7 +65,9 @@ def score(answer):
     user_answer = answer
     real_answer = portfolio[-1]["answer"]
     if user_answer == real_answer:
-        db.execute("UPDATE users set score=score+1 WHERE id=:id", \
+        db.execute("UPDATE score set total_score=total_score+1 WHERE id=:id", \
+                    id=session["user_id"])
+        db.execute("UPDATE score set session_score=session_score+1 WHERE id=:id", \
                     id=session["user_id"])
 
 def qinit():
@@ -71,9 +87,10 @@ def outofq():
     """Checks if out of questions"""
 
     # delete session from portfolio and return total score
-    delete = db.execute("DELETE FROM portfolio WHERE id = :id", id=session["user_id"])
-    u_score = db.execute("SELECT score FROM users WHERE id = :id", id=session["user_id"])
-    return (u_score)
+    delete_portfolio = db.execute("DELETE FROM portfolio WHERE id = :id", id=session["user_id"])
+    u_score = db.execute("SELECT total_score FROM score WHERE id = :id", id=session["user_id"])
+    s_score = db.execute("SELECT session_score FROM score WHERE id = :id", id=session["user_id"])
+    return [u_score, s_score]
 
 def sconfigmulti(answers, cat, questiontype, dif, qnumber, correct_answer):
     # insert data into portfolio for respective questiontypes
@@ -88,6 +105,21 @@ def sconfigtf(answers, cat, questiontype, dif, qnumber, correct_answer):
                         VALUES(:id, :answers, :category, :qtype, :difficulty, :qnumber)", \
                         answers = correct_answer, category = cat, qtype =questiontype, \
                         difficulty = dif, qnumber = qnumber, id=session["user_id"] )
+
+def delsession():
+    # delete session from portfolio
+    db.execute("DELETE FROM portfolio WHERE id = :id", id=session["user_id"])
+
+def session_score():
+    # set user id into score table
+    score = db.execute("INSERT INTO score (id) VALUES (:id)", id=session["user_id"])
+
+    # reset session score
+    if not score:
+        db.execute("UPDATE score set session_score=0 WHERE id=:id", \
+                    id=session["user_id"])
+
+
 
 
 

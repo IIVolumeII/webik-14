@@ -45,7 +45,8 @@ def index():
 def config():
     """Configure your game"""
 
-    # show config forms
+    # delete previous session and show config forms
+    delsession()
     return render_template("config.html")
 
 @app.route("/quickplay", methods=["GET", "POST"])
@@ -93,10 +94,12 @@ def quickplay():
         return render_template("playbool.html", question = question, answer = answers, category = category,
                                 qtype = qtype, difficulty = difficulty)
 
+
 @app.route("/play", methods=["GET", "POST"])
 @login_required
 def play():
     """Play the trivia game with configured settings"""
+
 
     # check if correct answer
     try:
@@ -112,6 +115,9 @@ def play():
         dif = request.form.get("difficulty")
         questiontype = request.form.get("qtype")
         qnumber = int(request.form.get("qnumber"))
+
+        # insert user id for new players
+        session_score()
 
     # retrieve initial user config for other questions
     except TypeError:
@@ -129,7 +135,8 @@ def play():
     # delete data from portfolio and return user to scoreboard if out of questions
     except ValueError:
         quit = outofq()
-        return render_template("scoreboard.html", score = quit)
+        return render_template("scoreboard.html", total_score = quit[0][0]["total_score"], \
+                                session_score = quit[1][0]["session_score"])
 
     # store question config
     results = response['results'][qnumber - 1]
@@ -245,7 +252,14 @@ def register():
 def profile():
     """Profile for users"""
 
-    return render_template("profile.html")
+    # select username for welcome message
+    user = username()
+
+    # select last session score and total score
+    score = outofq()
+
+    return render_template("profile.html", user = user, t_score = score[0][0]["total_score"], \
+                            s_score = score[1][0]["session_score"])
 
 
 @app.route("/change_password", methods=["GET", "POST"])
@@ -271,10 +285,9 @@ def change_password():
                 return apology("Please make sure your passwords match")
 
         # update users' password
-        db.execute("UPDATE users set hash=:hash WHERE id=:id", \
-                    hash=pwd_context.hash(new_pass), id=session["user_id"])
+        update_pass(new_pass)
 
-        return redirect(url_for("index"))
+        return succes("Succesfully changed your password")
 
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
