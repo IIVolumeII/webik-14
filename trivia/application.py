@@ -7,6 +7,7 @@ from pytrivia import Category, Diffculty, Type, Trivia
 from random import shuffle
 
 from helpers import *
+from user import *
 
 # configure application
 app = Flask(__name__)
@@ -32,29 +33,19 @@ db = SQL("sqlite:///finance.db")
 @app.route("/")
 @login_required
 def index():
+    """User homepage and navigation hub"""
 
     # select username for welcome message
-    user = db.execute("SELECT username FROM users WHERE id=:id", id=session["user_id"])
-    username = user[0]["username"]
+    user = username()
 
-    # select all values from the portfolio table
-    portfolio = db.execute("SELECT * FROM portfolio WHERE id=:id", id=session["user_id"])
-
-    return render_template("index.html", user = username)
-
-@app.route("/test", methods=["GET", "POST"])
-@login_required
-def test():
-    category = request.form.get("category")
-    difficulty = request.form.get("difficulty")
-    qtype = request.form.get("qtype")
-    return render_template("test.html", category = category, difficulty = difficulty, qtype = qtype)
+    return render_template("index.html", user = user)
 
 @app.route("/config", methods=["GET", "POST"])
 @login_required
 def config():
+    """Configure your game"""
 
-
+    # show config forms
     return render_template("config.html")
 
 @app.route("/quickplay", methods=["GET", "POST"])
@@ -105,18 +96,15 @@ def quickplay():
 @app.route("/play", methods=["GET", "POST"])
 @login_required
 def play():
-    """Redirect to lobby screen"""
-    # TODO functies in helpers schrijven voor overzicht en kortere code
-
-    # select database portfolio
-    portfolio = db.execute("SELECT * FROM portfolio WHERE id = :id", id=session["user_id"])
+    """Play the trivia game with configured settings"""
 
     # check if correct answer
     try:
         user_answer = request.form.get("answer")
         score(user_answer)
-    except IndexError:
-        x = 'x'
+    # pass checking for the first question
+    except:
+        pass
 
     # initial user config for first question
     try:
@@ -127,10 +115,11 @@ def play():
 
     # retrieve initial user config for other questions
     except TypeError:
-        cat = portfolio[-1]["category"]
-        dif = portfolio[-1]["difficulty"]
-        questiontype = portfolio[-1]["qtype"]
-        qnumber = int(portfolio[-1]["qnumber"]) - 1
+        config = qinit()
+        qnumber = config[3]
+        cat = config[0]
+        dif = config[1]
+        questiontype = config[2]
 
     # set settings for dataset entry
     my_api = Trivia(True)
@@ -139,13 +128,12 @@ def play():
                                     getattr(Type,questiontype))
     # delete data from portfolio and return user to scoreboard if out of questions
     except ValueError:
-        delete = db.execute("DELETE FROM portfolio WHERE id = :id", id=session["user_id"])
-        u_score = db.execute("SELECT score FROM users WHERE id = :id", id=session["user_id"])
-        return render_template("scoreboard.html", score = u_score)
+        quit = outofq()
+        return render_template("scoreboard.html", score = quit)
 
+    # store question config
     results = response['results'][qnumber - 1]
     qtype = results['type']
-
     category = results['category']
     qtype = results['type']
     difficulty = results['difficulty']
@@ -159,11 +147,7 @@ def play():
     if qtype == 'multiple':
         answers = [correct_answer, incorrect_answers[0], incorrect_answers[1], incorrect_answers[2]]
         shuffle(answers)
-
-        asked = db.execute("INSERT INTO portfolio (id, answer, category, qtype, difficulty, qnumber) \
-                            VALUES(:id, :answers, :category, :qtype, :difficulty, :qnumber)", \
-                            answers = correct_answer, category = cat, qtype = questiontype, \
-                            difficulty = dif, qnumber = qnumber, id=session["user_id"])
+        sconfigmulti(answers, cat, questiontype, dif, qnumber, correct_answer)
 
         # display trivia question multiple choice
         return render_template("play.html", question = question, answer = answers, category = category,
@@ -171,33 +155,19 @@ def play():
 
     else:
         answers = [correct_answer, incorrect_answers]
-
-        asked = db.execute("INSERT INTO portfolio (id, answer, category, qtype, difficulty, qnumber) \
-                            VALUES(:id, :answers, :category, :qtype, :difficulty, :qnumber)", \
-                            answers = correct_answer, category = cat, qtype =questiontype, \
-                            difficulty = dif, qnumber = qnumber, id=session["user_id"] )
+        sconfigtf(answers, cat, questiontype, dif, qnumber, correct_answer)
 
         # display trivia question true or false
         return render_template("playbool.html", question = question, answer = answers, category = category,
                                 qtype = qtype, difficulty = difficulty)
+
 
 @app.route("/scoreboard", methods=["GET", "POST"])
 @login_required
 def scoreboard():
     """Scoreboard for users"""
 
-    if request.method == "POST":
-
-        # ensure answer
-        if not request.form.get("answer"):
-            return apology("Please provide an answer")
-
-        answer = request.form.get("answer")
-
-        portfolio = db.execute("SELECT * FROM portfolio WHERE id = :id", id=session["user_id"])
-
-
-    return render_template("scoreboard.html", answer = portfolio[-1]['answer'])
+    return render_template("scoreboard.html")
 
 @app.route("/learnmore", methods=["GET", "POST"])
 @login_required
@@ -224,15 +194,9 @@ def login():
         elif not request.form.get("password"):
             return apology("Please provide password")
 
-        # query database for username
-        rows = db.execute("SELECT * FROM users WHERE username = :username", username=request.form.get("username"))
-
-        # ensure username exists and password is correct
-        if len(rows) != 1 or not pwd_context.verify(request.form.get("password"), rows[0]["hash"]):
-            return apology("Invalid username and/or password")
-
-        # remember which user has logged in
-        session["user_id"] = rows[0]["id"]
+        # login user
+        username = request.form.get("username")
+        login_user(username)
 
         # redirect user to home page
         return redirect(url_for("index"))
@@ -261,18 +225,8 @@ def register():
         if not request.form.get("username"):
             return apology("Please provide a username")
 
-        # ensure passwords are submitted and match
-        if not request.form.get("password"):
-            return apology("Please provide a password")
-        if not request.form.get("password2"):
-            return apology("Please fill in both password fields")
-        if not request.form.get("password") == request.form.get("password2"):
-            return apology("Please make sure your passwords match")
-
-        # add user to database and store password as hash
-        registered = db.execute("INSERT INTO users (username, hash) VALUES(:username, :hash)", \
-                                username = request.form.get("username"), \
-                                hash = pwd_context.hash(request.form.get("password")))
+        # insert new user in database if forms are correct
+        registered = new_user()
 
         # check if the username is already taken
         if not registered:
@@ -284,6 +238,7 @@ def register():
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("register.html")
+
 
 @app.route("/profile", methods=["GET", "POST"])
 @login_required
@@ -300,7 +255,7 @@ def change_password():
     if request.method == "POST":
 
         # ensure password matches old password
-        old_hash = db.execute("SELECT hash FROM users WHERE id=:id", id=session["user_id"])
+        old_hash = get_hash()
         check_hash = pwd_context.verify(request.form.get("old_password"), old_hash[0]["hash"])
         new_pass = request.form.get("new_password")
 

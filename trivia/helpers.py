@@ -9,9 +9,10 @@ from cs50 import SQL
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 
+
+
 # configure CS50 Library to use SQLite database
 db = SQL("sqlite:///finance.db")
-
 
 def apology(message, code=400):
     """Renders message as an apology to user."""
@@ -43,8 +44,7 @@ def login_required(f):
 
 def score(answer):
     """Adds points for correct answer"""
-
-    # select database portfolio
+    # select table
     portfolio = db.execute("SELECT * FROM portfolio WHERE id = :id", id=session["user_id"])
 
     # check if answer is correct
@@ -53,6 +53,41 @@ def score(answer):
     if user_answer == real_answer:
         db.execute("UPDATE users set score=score+1 WHERE id=:id", \
                     id=session["user_id"])
+
+def qinit():
+    """Initializes all but the first question"""
+    # select table
+    portfolio = db.execute("SELECT * FROM portfolio WHERE id = :id", id=session["user_id"])
+
+    # setup question config
+    cat = portfolio[-1]["category"]
+    dif = portfolio[-1]["difficulty"]
+    questiontype = portfolio[-1]["qtype"]
+    qnumber = int(portfolio[-1]["qnumber"]) - 1
+    config = [cat, dif, questiontype, qnumber]
+    return (config)
+
+def outofq():
+    """Checks if out of questions"""
+
+    # delete session from portfolio and return total score
+    delete = db.execute("DELETE FROM portfolio WHERE id = :id", id=session["user_id"])
+    u_score = db.execute("SELECT score FROM users WHERE id = :id", id=session["user_id"])
+    return (u_score)
+
+def sconfigmulti(answers, cat, questiontype, dif, qnumber, correct_answer):
+    # insert data into portfolio for respective questiontypes
+    asked = db.execute("INSERT INTO portfolio (id, answer, category, qtype, difficulty, qnumber) \
+                        VALUES(:id, :answers, :category, :qtype, :difficulty, :qnumber)", \
+                        answers = correct_answer, category = cat, qtype = questiontype, \
+                        difficulty = dif, qnumber = qnumber, id=session["user_id"])
+
+def sconfigtf(answers, cat, questiontype, dif, qnumber, correct_answer):
+    # insert data into portfolio for respective questiontypes
+    asked = db.execute("INSERT INTO portfolio (id, answer, category, qtype, difficulty, qnumber) \
+                        VALUES(:id, :answers, :category, :qtype, :difficulty, :qnumber)", \
+                        answers = correct_answer, category = cat, qtype =questiontype, \
+                        difficulty = dif, qnumber = qnumber, id=session["user_id"] )
 
 
 
