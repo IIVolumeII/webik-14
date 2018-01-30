@@ -36,10 +36,9 @@ def index():
     """User homepage and navigation hub"""
 
     # select username for welcome message
-    user = get_user()
-    username = user[0]["username"]
+    user = username()
 
-    return render_template("index.html", user = username)
+    return render_template("index.html", user = user)
 
 @app.route("/config", methods=["GET", "POST"])
 @login_required
@@ -103,6 +102,7 @@ def play():
     try:
         user_answer = request.form.get("answer")
         score(user_answer)
+    # pass checking for the first question
     except:
         pass
 
@@ -129,7 +129,7 @@ def play():
     # delete data from portfolio and return user to scoreboard if out of questions
     except ValueError:
         quit = outofq()
-        return render_template("scoreboard.html", score = user_answer)
+        return render_template("scoreboard.html", score = quit)
 
     # store question config
     results = response['results'][qnumber - 1]
@@ -194,15 +194,9 @@ def login():
         elif not request.form.get("password"):
             return apology("Please provide password")
 
-        # query database for username
-        row = rows()
-
-        # ensure username exists and password is correct
-        if len(row) != 1 or not pwd_context.verify(request.form.get("password"), row[0]["hash"]):
-            return apology("Invalid username and/or password")
-
-        # remember which user has logged in
-        session["user_id"] = row[0]["id"]
+        # login user
+        username = request.form.get("username")
+        login_user(username)
 
         # redirect user to home page
         return redirect(url_for("index"))
@@ -225,28 +219,25 @@ def logout():
 def register():
     """Register user."""
 
-    # ensure username is submitted
-    if not request.form.get("username"):
-        return apology("Please provide a username")
+    if request.method == "POST":
 
-    # ensure passwords are submitted and match
-    if not request.form.get("password"):
-        return apology("Please provide a password")
-    if not request.form.get("password2"):
-        return apology("Please fill in both password fields")
-    if not request.form.get("password") == request.form.get("password2"):
-        return apology("Please make sure your passwords match")
+        # ensure username is submitted
+        if not request.form.get("username"):
+            return apology("Please provide a username")
 
-    # add user to database and store password as hash
-    registered = new_user()
+        # insert new user in database if forms are correct
+        registered = new_user()
 
-    # check if the username is already taken
-    if not registered:
-        return apology("Username is already taken. Please fill in a different username")
+        # check if the username is already taken
+        if not registered:
+            return apology("Username is already taken. Please fill in a different username")
 
-    # redirect user to home page
-    return redirect(url_for("index"))
+        # redirect user to home page
+        return redirect(url_for("index"))
 
+    # else if user reached route via GET (as by clicking a link or via redirect)
+    else:
+        return render_template("register.html")
 
 
 @app.route("/profile", methods=["GET", "POST"])
@@ -264,8 +255,8 @@ def change_password():
     if request.method == "POST":
 
         # ensure password matches old password
-        old_hash = old_hash()
-        check_hash = check_hash()
+        old_hash = get_hash()
+        check_hash = pwd_context.verify(request.form.get("old_password"), old_hash[0]["hash"])
         new_pass = request.form.get("new_password")
 
         # ensure new passwords match and all fields are filled in
@@ -280,7 +271,8 @@ def change_password():
                 return apology("Please make sure your passwords match")
 
         # update users' password
-        update_pass()
+        db.execute("UPDATE users set hash=:hash WHERE id=:id", \
+                    hash=pwd_context.hash(new_pass), id=session["user_id"])
 
         return redirect(url_for("index"))
 

@@ -11,29 +11,34 @@ from helpers import *
 
 db = SQL("sqlite:///finance.db")
 
-def get_user():
-
-    return db.execute("SELECT username FROM users WHERE id=:id", id=session["user_id"])
-
-def rows():
-
-    return db.execute("SELECT * FROM users WHERE username = :username", username=request.form.get("username"))
-
 def new_user():
 
-    db.execute("INSERT INTO users (username, hash) VALUES(:username, :hash)", \
-                username = request.form.get("username"), \
-                hash = pwd_context.hash(request.form.get("password")))
+    # add user to database and store password as hash
+    registered = db.execute("INSERT INTO users (username, hash) VALUES(:username, :hash)", \
+                            username = request.form.get("username"), \
+                            hash = pwd_context.hash(request.form.get("password")))
 
-def old_hash():
+    return registered
 
-    return db.execute("SELECT hash FROM users WHERE id=:id", id=session["user_id"])
+def username():
+    # select username in session
+    user = db.execute("SELECT username FROM users WHERE id = :id", id=session["user_id"])
+    username = user[0]["username"]
+    return username
 
-def check_hash():
+def login_user(username):
 
-    return pwd_context.verify(request.form.get("old_password"), old_hash[0]["hash"])
+    # query database for username
+    rows = db.execute("SELECT * FROM users WHERE username = :username", username=username)
 
-def update_pass():
+    # ensure username exists and password is correct
+    if len(rows) != 1 or not pwd_context.verify(request.form.get("password"), rows[0]["hash"]):
+        return apology("Invalid username and/or password")
 
-    db.execute("UPDATE users set hash=:hash WHERE id=:id", \
-                hash=pwd_context.hash(new_pass), id=session["user_id"])
+    # remember which user has logged in
+    session["user_id"] = rows[0]["id"]
+
+def get_hash():
+    # retrieve hash from database
+    user_hash = db.execute("SELECT hash FROM users WHERE id=:id", id=session["user_id"])
+    return user_hash
