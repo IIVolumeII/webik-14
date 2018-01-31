@@ -6,19 +6,19 @@
 
 {% block main %}
     <form action="{{ url_for('play') }}" method="post">
-            <h1> {{ category }}</h1>
-            <div>{{ question }}</div>
-            <p></p>
-            <div>
+        <h1> {{ category }}</h1>
+        <div>{{ question }}</div>
+        <p></p>
+        <div>
             <input type="radio" name="answer" value= {{ True }} >{{ True }}<br>
-            </div>
-            <div>
+        </div>
+        <div>
             <input type="radio" name="answer" value= {{ False }} >{{ False }}<br>
-            </div>
+        </div>
             <p></p>
             <div class="form-group">
             <button class="button" type="submit">Submit</button>
-            </div>
-
+        </div>
     </form>
+
 {% endblock %}

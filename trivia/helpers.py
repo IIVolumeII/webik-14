@@ -114,12 +114,15 @@ def session_score():
     # set user id into score table
     score = db.execute("INSERT INTO score (id) VALUES (:id)", id=session["user_id"])
 
+def q_score():
+    # return session score
+    score = db.execute("SELECT session_score FROM score WHERE id = :id", id=session["user_id"])
+    return score[0]["session_score"]
+
+def reset_score():
     # reset session score
-    if not score:
-        db.execute("UPDATE score set session_score=0 WHERE id=:id", \
-                    id=session["user_id"])
-
-
+    db.execute("UPDATE score set session_score=0 WHERE id=:id", \
+                id=session["user_id"])
 
 
 
