@@ -19,3 +19,9 @@ De huidige features van deze triviasite zijn:
 - Een eigen profiel
 - Een homepage
 - Een learn more pagina met meer informatie
+
+## Repository
+
+- De model van de code bestaat uit helpers.py en users.py. In users.py staan functies omtrent het registreren en inloggen en in helpers.py staan functies voor de triviavragen en de scores
+- De view bestaat uit de bestanden in het mapje templates
+- De controller van de code bestaat uit application.py
