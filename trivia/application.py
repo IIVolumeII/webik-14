@@ -54,15 +54,34 @@ def config():
 def quickplay():
     """Play with completely randomized questions"""
 
+   # check if correct answer
+    try:
+        user_answer = request.form.get("answer")
+        score(user_answer)
+    # pass checking for the first question
+    except:
+        pass
+
+    # insert user id for new players
+    try:
+        session_score()
+    except:
+        pass
+
     # set settings for dataset entry
     my_api = Trivia(True)
-    response = my_api.request(1, Category.General)
-    results = response['results'][0]
 
-    # save config variables
+    # retrieve question
+    response = my_api.request(1)
+
+
+    # store question config
+    results = response['results'][0]
+    qtype = results['type']
     category = results['category']
     qtype = results['type']
     difficulty = results['difficulty']
+    qnumber = 10000
 
     # store questions and answers in variables
     question = results['question']
@@ -73,27 +92,19 @@ def quickplay():
     if qtype == 'multiple':
         answers = [correct_answer, incorrect_answers[0], incorrect_answers[1], incorrect_answers[2]]
         shuffle(answers)
-
-        asked = db.execute("INSERT INTO portfolio (id, answer, category, qtype, difficulty) \
-                            VALUES(:id, :answers, :category, :qtype, :difficulty)", \
-                            answers = correct_answer, category = category, qtype = qtype, \
-                            difficulty = difficulty, id=session["user_id"])
+        sconfigmulti(answers, category, qtype, difficulty, qnumber, correct_answer)
 
         # display trivia question multiple choice
-        return render_template("play.html", question = question, answer = answers, category = category,
+        return render_template("qplay.html", question = question, answer = answers, category = category,
                                 qtype = qtype, difficulty = difficulty)
+
     else:
         answers = [correct_answer, incorrect_answers]
-
-        asked = db.execute("INSERT INTO portfolio (id, answer, category, qtype, difficulty) \
-                            VALUES(:id, :answers, :category, :qtype, :difficulty)", \
-                            answers = answers[0], category = category, qtype = qtype, \
-                            difficulty = difficulty, id=session["user_id"] )
+        sconfigtf(answers, category, qtype, difficulty, qnumber, correct_answer)
 
         # display trivia question true or false
-        return render_template("playbool.html", question = question, answer = answers, category = category,
+        return render_template("qplaybool.html", question = question, answer = answers, category = category,
                                 qtype = qtype, difficulty = difficulty)
-
 
 @app.route("/play", methods=["GET", "POST"])
 @login_required
@@ -173,11 +184,13 @@ def play():
 @login_required
 def scoreboard():
     """Scoreboard for users"""
-
-    return render_template("scoreboard.html")
+    quick = q_score()
+    quit = outofq()
+    reset_score()
+    return render_template("scoreboard.html", total_score = quit[0][0]["total_score"], \
+                                session_score = quick)
 
 @app.route("/learnmore", methods=["GET", "POST"])
-@login_required
 def learnmore():
     """Text page with info about the game."""
 
@@ -295,4 +308,23 @@ def change_password():
 
 @app.route("/leaderboards", methods=["GET"])
 def leaderboards():
-    return render_template("leaderboards.html")
+
+    # lookup top 5 scores
+    top = leaders()
+    one = top[0][0]["total_score"]
+    two = top[0][1]["total_score"]
+    three = top[0][2]["total_score"]
+    four = top[0][3]["total_score"]
+    five = top[0][4]["total_score"]
+
+    # lookup names associated with top 5 scores
+    names = leader_names(top)
+    name_1 = names[0][0]["username"]
+    name_2 = names[1][0]["username"]
+    name_3 = names[2][0]["username"]
+    name_4 = names[3][0]["username"]
+    name_5 = names[4][0]["username"]
+
+    return render_template("leaderboards.html", score_1 = one, score_2 = two, score_3 = three, \
+                            score_4 = four, score_5 = five, name_1 = name_1, name_2 = name_2, \
+                            name_3 = name_3, name_4 = name_4, name_5 = name_5)

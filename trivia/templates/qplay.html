@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quickplay
+{% endblock %}
+
+{% block main %}
+    <form action="{{ url_for('quickplay') }}" method="post">
+            <h1> {{ category }}</h1>
+            <div>{{ question }}</div>
+            <p></p>
+            <div>
+            <input type="radio" name="answer" value= "{{answer[0]}}" >{{answer[0]}}<br>
+            </div>
+            <div>
+            <input type="radio" name="answer" value= "{{answer[1]}}" >{{answer[1]}}<br>
+            </div>
+            <div>
+            <input type="radio" name="answer" value= "{{answer[2]}}" >{{answer[2]}}<br>
+            </div>
+            <div>
+            <input type="radio" name="answer" value= "{{answer[3]}}" >{{answer[3]}}<br>
+            </div>
+            <p></p>
+            <div class="form-group">
+            <button class="button" type="submit">Submit</button>
+            </div>
+    </form>
+
+    <form action="{{ url_for('scoreboard') }}" method="post">
+        <div class="form-group">
+            <button class="button" type="submit">Quit</button>
+        </div>
+    </form>
+{% endblock %}

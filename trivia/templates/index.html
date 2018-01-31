@@ -7,13 +7,18 @@
 {% block main %}
 
   <h2>Welcome '{{ user }}'</h2>
-  <iframe width="700" height="380" src="https://www.youtube.com/embed/tgbNymZ7vqY">
+  <iframe width="700" height="380" src="https://www.youtube.com/embed/YqVYrT-hS9s">
   </iframe>
 
-  <div style="position:fixed; transition: .5s ease; top: 70%; left: 30%;">
+  <div style="position:fixed; transition: .5s ease; top: 60%; left: 30%;">
                 <a href="{{ url_for('leaderboards') }}" class="btn btn-warning btn-lg" role="button" >Global leaderboards</a>
   </div>
-  <div style="position:fixed; transition: .5s ease; top: 70%; left: 70%;">
+
+  <div style="position:fixed; transition: .5s ease; top: 60%; left: 48%;">
+                <a href="{{ url_for('quickplay') }}" class="btn btn-warning btn-lg" role="button" >Play now!</a>
+  </div>
+
+  <div style="position:fixed; transition: .5s ease; top: 60%; left: 64%;">
                 <a href="{{ url_for('learnmore') }}" class="btn btn-warning btn-lg" role="button" >Learn more</a>
   </div>
 

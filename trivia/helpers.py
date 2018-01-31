@@ -114,14 +114,39 @@ def session_score():
     # set user id into score table
     score = db.execute("INSERT INTO score (id) VALUES (:id)", id=session["user_id"])
 
+def q_score():
+    # return session score
+    score = db.execute("SELECT session_score FROM score WHERE id = :id", id=session["user_id"])
+    return score[0]["session_score"]
+
+def reset_score():
     # reset session score
-    if not score:
-        db.execute("UPDATE score set session_score=0 WHERE id=:id", \
-                    id=session["user_id"])
+    db.execute("UPDATE score set session_score=0 WHERE id=:id", \
+                id=session["user_id"])
 
+def leaders():
+    # lookup top 5 scores
+    one = db.execute("SELECT * FROM score ORDER BY total_score DESC LIMIT 0, 5")
+    two = db.execute("SELECT * FROM score ORDER BY total_score DESC LIMIT 0, 5")
+    three = db.execute("SELECT * FROM score ORDER BY total_score DESC LIMIT 0, 5")
+    four = db.execute("SELECT * FROM score ORDER BY total_score DESC LIMIT 0, 5")
+    five = db.execute("SELECT * FROM score ORDER BY total_score DESC LIMIT 0, 5")
 
+    return [one, two, three, four, five]
 
+def leader_names(top):
+    # set id's of top 5 scores
+    row_1 = top[1][0]["id"]
+    row_2 = top[1][1]["id"]
+    row_3 = top[1][2]["id"]
+    row_4 = top[1][3]["id"]
+    row_5 = top[1][4]["id"]
 
+    # lookup names associated with top 5 scores
+    name_1 = db.execute("SELECT username FROM users WHERE id = :id", id=row_1)
+    name_2 = db.execute("SELECT username FROM users WHERE id = :id", id=row_2)
+    name_3 = db.execute("SELECT username FROM users WHERE id = :id", id=row_3)
+    name_4 = db.execute("SELECT username FROM users WHERE id = :id", id=row_4)
+    name_5 = db.execute("SELECT username FROM users WHERE id = :id", id=row_5)
 
-
-
+    return [name_1, name_2, name_3, name_4, name_5]
