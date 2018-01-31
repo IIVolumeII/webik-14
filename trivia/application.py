@@ -191,7 +191,6 @@ def scoreboard():
                                 session_score = quick)
 
 @app.route("/learnmore", methods=["GET", "POST"])
-@login_required
 def learnmore():
     """Text page with info about the game."""
 
@@ -309,6 +308,8 @@ def change_password():
 
 @app.route("/leaderboards", methods=["GET"])
 def leaderboards():
+
+    # lookup top 5 scores
     top = leaders()
     one = top[0][0]["total_score"]
     two = top[0][1]["total_score"]
@@ -316,6 +317,7 @@ def leaderboards():
     four = top[0][3]["total_score"]
     five = top[0][4]["total_score"]
 
+    # lookup names associated with top 5 scores
     names = leader_names(top)
     name_1 = names[0][0]["username"]
     name_2 = names[1][0]["username"]

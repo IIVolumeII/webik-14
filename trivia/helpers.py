@@ -125,6 +125,7 @@ def reset_score():
                 id=session["user_id"])
 
 def leaders():
+    # lookup top 5 scores
     one = db.execute("SELECT * FROM score ORDER BY total_score DESC LIMIT 0, 5")
     two = db.execute("SELECT * FROM score ORDER BY total_score DESC LIMIT 0, 5")
     three = db.execute("SELECT * FROM score ORDER BY total_score DESC LIMIT 0, 5")
@@ -134,12 +135,14 @@ def leaders():
     return [one, two, three, four, five]
 
 def leader_names(top):
+    # set id's of top 5 scores
     row_1 = top[1][0]["id"]
     row_2 = top[1][1]["id"]
     row_3 = top[1][2]["id"]
     row_4 = top[1][3]["id"]
     row_5 = top[1][4]["id"]
 
+    # lookup names associated with top 5 scores
     name_1 = db.execute("SELECT username FROM users WHERE id = :id", id=row_1)
     name_2 = db.execute("SELECT username FROM users WHERE id = :id", id=row_2)
     name_3 = db.execute("SELECT username FROM users WHERE id = :id", id=row_3)

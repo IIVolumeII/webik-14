@@ -27,7 +27,7 @@
         <div class="container">
 
     <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
-        <a class="navbar-brand" href="{{ url_for('index') }}">ATU Trivia</a>
+        <a class="navbar-brand" href="{{ url_for('index') }}">Simple Trivia</a>
 
         <div class="navbar-collapse collapse show" id="navbarColor01" style="">
 
@@ -35,6 +35,9 @@
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('config') }}">Play</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('quickplay') }}">Quickplay</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('leaderboards') }}">Global leaderboards</a>
@@ -81,7 +84,7 @@
             </div>
             <div style="position: absolute; right: 0; bottom: 0; left: 0; padding: 1rem; background-color: #777777; text-align: center;">
               {% block footer %}
-                  &copy; Copyright 2018 by Abel Aben, Timon Brouwer, Ugurhan Candemir.
+                  For suggestions for the site email me at "simpletrivia@uva.nl"
               {% endblock %}
             </div>
 
