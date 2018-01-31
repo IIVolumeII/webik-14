@@ -1,6 +1,6 @@
 # Simple Trivia
 
-Een triviawebsite gemaakt door Timon Brouwer (11857692)
+Een triviawebsite gemaakt door Timon Brouwer (11857692) uit groep 14
 
 ![schets](schetsen/Screenshot.png)
 
