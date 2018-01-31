@@ -309,4 +309,20 @@ def change_password():
 
 @app.route("/leaderboards", methods=["GET"])
 def leaderboards():
-    return render_template("leaderboards.html")
+    top = leaders()
+    one = top[0][0]["total_score"]
+    two = top[0][1]["total_score"]
+    three = top[0][2]["total_score"]
+    four = top[0][3]["total_score"]
+    five = top[0][4]["total_score"]
+
+    names = leader_names(top)
+    name_1 = names[0][0]["username"]
+    name_2 = names[1][0]["username"]
+    name_3 = names[2][0]["username"]
+    name_4 = names[3][0]["username"]
+    name_5 = names[4][0]["username"]
+
+    return render_template("leaderboards.html", score_1 = one, score_2 = two, score_3 = three, \
+                            score_4 = four, score_5 = five, name_1 = name_1, name_2 = name_2, \
+                            name_3 = name_3, name_4 = name_4, name_5 = name_5)
