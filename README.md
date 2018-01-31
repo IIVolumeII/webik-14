@@ -1,10 +1,8 @@
-# README
-
 # Simple Trivia
 
 Een triviawebsite gemaakt door Timon Brouwer (11857692)
 
-![schets](schetsen/Homepage_index.png)
+![schets](schetsen/Screenshot.png)
 
 
 ## Features
