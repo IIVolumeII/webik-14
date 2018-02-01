@@ -7,7 +7,7 @@ Een triviawebsite gemaakt door Timon Brouwer (11857692) uit groep 14
 
 ## Showcase video
 
-[linkname](https://youtu.be/nFYVZa-RNZc)
+[Video](https://youtu.be/nFYVZa-RNZc)
 
 ## Features
 
